@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PMP Key Terms & Definitions Quiz</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f6f9; color: #333; }
+        .container { max-width: 950px; margin: 0 auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #1f2937; margin-bottom: 5px; }
+        .quiz-header-title { text-align: center; font-size: 14px; color: #6b7280; font-weight: bold; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        .student-info { background: #eff6ff; border: 1px solid #bfdbfe; padding: 15px; border-radius: 6px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .student-info div { display: flex; flex-direction: column; }
+        .student-info label { font-weight: bold; font-size: 14px; color: #1e40af; margin-bottom: 5px; }
+        .student-info input { padding: 10px; border: 1px solid #93c5fd; border-radius: 4px; font-size: 15px; box-sizing: border-box; }
+        .instructions { background: #e5e7eb; padding: 15px; border-radius: 5px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .timer-box { font-weight: bold; color: #dc2626; background: #fee2e2; padding: 6px 12px; border-radius: 4px; border: 1px solid #fca5a5; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #d1d5db; padding: 12px; text-align: left; vertical-align: top; }
+        th { background-color: #2563eb; color: white; }
+        select { width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; font-size: 14px; }
+        .btn-submit { display: block; width: 100%; padding: 12px; background-color: #10b981; color: white; border: none; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 20px; }
+        .btn-submit:hover { background-color: #059669; }
+        .btn-submit:disabled { background-color: #9ca3af; cursor: not-allowed; }
+        #result { margin-top: 20px; font-size: 20px; font-weight: bold; text-align: center; }
+        .correct { background-color: #d1fae5; }
+        .incorrect { background-color: #fee2e2; }
+        .correct-answer-text { color: #dc2626; font-weight: bold; font-size: 13px; margin-top: 6px; display: block; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="quiz-header-title" id="quizTitleDisplay">PMP350-01/26 | Quiz Module</div>
+    <h1>PMP Key Terms & Definitions Quiz</h1>
+    
+    <div class="student-info">
+        <div>
+            <label for="studentName">Student Name / اسم الطالب *</label>
+            <input type="text" id="studentName" placeholder="Enter your full name..." required>
+        </div>
+        <div>
+            <label for="studentEmail">Student Email / البريد الإلكتروني *</label>
+            <input type="email" id="studentEmail" placeholder="Enter your email address..." required>
+        </div>
+    </div>
+
+    <div class="instructions">
+        <span><strong>Instructions:</strong> Match each definition on the right with its corresponding Key Term from the drop-down menu.</span>
+        <span class="timer-box" id="timer">Time: 00:00</span>
+    </div>
+
+    <form id="quizForm">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 35%;">Select Key Term</th>
+                    <th style="width: 65%;">Definition</th>
+                </tr>
+            </thead>
+            <tbody id="quizTable">
+                <!-- Questions generated dynamically -->
+            </tbody>
+        </table>
+        <button type="button" id="submitBtn" class="btn-submit" onclick="checkAnswers()">Submit Answers</button>
+    </form>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    // ==========================================
+    // CONFIGURATION & INTEGRATION SETTINGS
+    // ==========================================
+    // Replace with your Google Apps Script Web App URL
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh6IDiXSyo4Qkvcioml5hNT-UP8pENsK8QBPn2Cj7nFkAmqY0HPamMBLUIVqQCiJly/exec"; 
+    
+    const QUIZ_CONFIG = {
+        quizName: "PMP_Key_Terms_Quiz" // Sheet Tab Name inside PMP350-01/26_Quiz_Results
+    };
+
+    // Timer Variables
+    let startTime = Date.now();
+    let timerInterval = setInterval(updateTimer, 1000);
+
+    function updateTimer() {
+        let elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+        let minutes = Math.floor(elapsedTime / 60).toString().padStart(2, '0');
+        let seconds = (elapsedTime % 60).toString().padStart(2, '0');
+        document.getElementById('timer').innerText = `Time: ${minutes}:${seconds}`;
+    }
+
+    const termsList = [
+        "1. Project",
+        "2. Benefit",
+        "3. Program",
+        "4. Output",
+        "5. Value delivery system",
+        "6. Project management team",
+        "7. Artifact",
+        "8. Project success",
+        "9. Portfolio",
+        "10. Product",
+        "11. Value",
+        "12. Project management office (PMO)",
+        "13. Project team",
+        "14. Outcome",
+        "15. Project manager",
+        "16. Project management"
+    ];
+
+    const quizData = [
+        { ans: 4, text: "An artifact that is produced, is quantifiable, and can be either an end item in itself or a component item." },
+        { ans: 7, text: "A document or other item created during a portfolio, program, or project to help manage it and provide information to the project team, stakeholders, and management." },
+        { ans: 8, text: "The consensus view across intended beneficiaries, other stakeholders, and project participants that a project was perceived to have delivered value that was worth the effort and expense." },
+        { ans: 15, text: "The person assigned by the performing organization to lead the team that is responsible for achieving the project objectives." },
+        { ans: 13, text: "A set of individuals performing the work of the project to achieve its objectives." },
+        { ans: 3, text: "A group of related projects and program activities managed in a coordinated manner to obtain benefits not available from managing them individually." },
+        { ans: 12, text: "Organizational entities, typically established as departments or teams, primarily tasked with centralizing activities related to the management of portfolios, programs, and/or projects." },
+        { ans: 1, text: "A temporary initiative in a unique context undertaken to create value." },
+        { ans: 16, text: "The application of knowledge, skills, tools, and techniques to project activities to meet or exceed the intended value." },
+        { ans: 2, text: "A gain or asset realized by the organization and other stakeholders as the result of outcomes delivered." },
+        { ans: 6, text: "The members of the project team who are directly involved in project management activities." },
+        { ans: 14, text: "An end result or consequence of a process or project." },
+        { ans: 5, text: "A collection of strategic business activities aimed at building, sustaining, and/or advancing an organization." },
+        { ans: 11, text: "The excess of financial and nonfinancial benefits over investment that is gained from achieving the goals of a portfolio, program, or project." },
+        { ans: 10, text: "A product, result, or service generated by a process." },
+        { ans: 9, text: "A collection of programs, projects, and operations managed as a group to maximize overall value delivery." }
+    ];
+
+    const tbody = document.getElementById('quizTable');
+    
+    quizData.forEach((q, i) => {
+        let options = `<option value="">-- Select Term --</option>`;
+        termsList.forEach((term, index) => {
+            options += `<option value="${index + 1}">${term}</option>`;
+        });
+
+        tbody.innerHTML += `
+            <tr id="row-${i}">
+                <td><select id="q-${i}">${options}</select></td>
+                <td id="def-${i}">${q.text}</td>
+            </tr>
+        `;
+    });
+
+    function checkAnswers() {
+        const studentName = document.getElementById('studentName').value.trim();
+        const studentEmail = document.getElementById('studentEmail').value.trim();
+        const resultDiv = document.getElementById('result');
+        const submitBtn = document.getElementById('submitBtn');
+
+        if (!studentName || !studentEmail) {
+            alert('Please enter both your Full Name and Email before submitting.');
+            return;
+        }
+
+        // Stop Timer
+        clearInterval(timerInterval);
+        const durationText = document.getElementById('timer').innerText.replace('Time: ', '');
+
+        let score = 0;
+
+        quizData.forEach((q, i) => {
+            const select = document.getElementById(`q-${i}`);
+            const row = document.getElementById(`row-${i}`);
+            const defTd = document.getElementById(`def-${i}`);
+            const userAns = parseInt(select.value);
+
+            const oldFeedback = document.getElementById(`feedback-${i}`);
+            if (oldFeedback) oldFeedback.remove();
+
+            row.classList.remove('correct', 'incorrect');
+
+            if (userAns === q.ans) {
+                score++;
+                row.classList.add('correct');
+            } else {
+                row.classList.add('incorrect');
+                const correctAnswerText = termsList[q.ans - 1];
+                defTd.innerHTML += `<span id="feedback-${i}" class="correct-answer-text">✕ Correct Answer: ${correctAnswerText}</span>`;
+            }
+        });
+
+        const percentageText = Math.round((score / quizData.length) * 100) + "%";
+        
+        resultDiv.innerHTML = `Great job, ${studentName}!<br>Your Score: ${score} / ${quizData.length} (${percentageText})<br><small style="font-size:14px; font-weight:normal; color:#6b7280;">Submitting results to system...</small>`;
+        resultDiv.style.color = score === quizData.length ? '#059669' : '#1e40af';
+
+        // Disable button to prevent multiple submissions
+        submitBtn.disabled = true;
+
+        // Send Data to Google Sheets
+        sendDataToGoogleSheet(studentName, studentEmail, score, quizData.length, percentageText, durationText);
+    }
+
+    function sendDataToGoogleSheet(studentName, studentEmail, score, totalQuestions, percentageText, durationText) {
+        const payload = {
+            quizName: QUIZ_CONFIG.quizName,
+            studentName: studentName,
+            studentEmail: studentEmail,
+            examDuration: durationText,
+            score: `${score} / ${totalQuestions}`,
+            percentage: percentageText
+        };
+
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `Great job, ${studentName}!<br>Your Score: ${score} / ${totalQuestions} (${percentageText})<br><span style="font-size:15px; color:#10b981;">✔ Results recorded successfully in system!</span>`;
+        })
+        .catch(error => {
+            console.error("Error submitting results:", error);
+            alert("Results calculated, but failed to save online. Please check network connection.");
+        });
+    }
+</script>
+
+</body>
+</html>
