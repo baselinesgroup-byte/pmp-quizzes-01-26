@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PMP Foundation & Value Quiz</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f6f9; color: #333; }
+        .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #1f2937; margin-bottom: 5px; }
+        .quiz-header-title { text-align: center; font-size: 14px; color: #6b7280; font-weight: bold; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        .student-info { background: #eff6ff; border: 1px solid #bfdbfe; padding: 15px; border-radius: 6px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .student-info div { display: flex; flex-direction: column; }
+        .student-info label { font-weight: bold; font-size: 14px; color: #1e40af; margin-bottom: 5px; }
+        .student-info input { padding: 10px; border: 1px solid #93c5fd; border-radius: 4px; font-size: 15px; box-sizing: border-box; }
+        .instructions { background: #e5e7eb; padding: 15px; border-radius: 5px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
+        .timer-box { font-weight: bold; color: #dc2626; background: #fee2e2; padding: 6px 12px; border-radius: 4px; border: 1px solid #fca5a5; }
+        
+        /* Question Card Styling */
+        .question-card { background: #fafafa; border: 1px solid #e5e7eb; border-radius: 6px; padding: 18px; margin-bottom: 20px; transition: all 0.3s ease; }
+        .question-card.correct { background-color: #f0fdf4; border-color: #86efac; }
+        .question-card.incorrect { background-color: #fef2f2; border-color: #fca5a5; }
+        .question-text { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 12px; line-height: 1.5; }
+        
+        .options-group { display: flex; gap: 20px; margin-bottom: 8px; }
+        .options-group label { font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 500; }
+        .options-group input[type="radio"] { width: 18px; height: 18px; cursor: pointer; }
+        
+        .explanation-box { margin-top: 12px; padding: 10px 14px; background: #fff; border-left: 4px solid #dc2626; border-radius: 4px; font-size: 14px; color: #991b1b; display: none; line-height: 1.4; }
+        .explanation-box strong { font-weight: bold; }
+        
+        .btn-submit { display: block; width: 100%; padding: 14px; background-color: #10b981; color: white; border: none; font-size: 17px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 25px; }
+        .btn-submit:hover { background-color: #059669; }
+        .btn-submit:disabled { background-color: #9ca3af; cursor: not-allowed; }
+        #result { margin-top: 25px; font-size: 20px; font-weight: bold; text-align: center; line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="quiz-header-title">PMP350-01/26 | Foundation & Value Module</div>
+    <h1>PMP Foundation & Value Quiz</h1>
+    
+    <div class="student-info">
+        <div>
+            <label for="studentName">Student Name / اسم الطالب *</label>
+            <input type="text" id="studentName" placeholder="Enter your full name..." required>
+        </div>
+        <div>
+            <label for="studentEmail">Student Email / البريد الإلكتروني *</label>
+            <input type="email" id="studentEmail" placeholder="Enter your email address..." required>
+        </div>
+    </div>
+
+    <div class="instructions">
+        <span><strong>Instructions:</strong> Read each scenario carefully and select whether the statement is <strong>True</strong> or <strong>False</strong>.</span>
+        <span class="timer-box" id="timer">Time: 00:00</span>
+    </div>
+
+    <form id="quizForm">
+        <div id="questionsContainer">
+            <!-- Questions rendered via JS -->
+        </div>
+        <button type="button" id="submitBtn" class="btn-submit" onclick="checkAnswers()">Submit Answers</button>
+    </form>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    // Integration Setup
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh6IDiXSyo4Qkvcioml5hNT-UP8pENsK8QBPn2Cj7nFkAmqY0HPamMBLUIVqQCiJly/exec";
+    const QUIZ_CONFIG = {
+        quizName: "PMP_Foundation_Value_Quiz"
+    };
+
+    // Timer Variables
+    let startTime = Date.now();
+    let timerInterval = setInterval(updateTimer, 1000);
+
+    function updateTimer() {
+        let elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+        let minutes = Math.floor(elapsedTime / 60).toString().padStart(2, '0');
+        let seconds = (elapsedTime % 60).toString().padStart(2, '0');
+        document.getElementById('timer').innerText = `Time: ${minutes}:${seconds}`;
+    }
+
+    // 10 Scenario-based True / False Questions
+    const quizQuestions = [
+        {
+            id: 1,
+            question: "1. Scenario: An organization finishes constructing a state-of-the-art automated warehouse strictly on time and within budget. However, due to severe software integration issues, operational throughput drops by 40% compared to the old manual system.\nStatement: Based on standard project management principles, this initiative is classified as an absolute project success.",
+            correctAnswer: "False",
+            explanation: "Project success is defined by consensus among beneficiaries and stakeholders that the initiative delivered worth/value relative to effort and expense, not merely meeting baseline constraints of scope, time, and budget."
+        },
+        {
+            id: 2,
+            question: "2. Scenario: A software project team delivers a fully functioning feature set (Output) on schedule. Three months post-release, customer adoption rate reaches 85% (Outcome), leading to a 20% growth in annual recurring subscription revenue.\nStatement: In the value delivery system framework, the 20% increase in revenue represents the 'Outcome' of the project.",
+            correctAnswer: "False",
+            explanation: "The end result (85% customer adoption rate) is the Outcome, whereas the financial gain (20% increase in subscription revenue) represents the realized Benefit/Value."
+        },
+        {
+            id: 3,
+            question: "3. Scenario: A company manages 5 different construction initiatives. Projects A, B, and C share specialized equipment and regulatory compliance workflows, while Projects D and E focus on IT infrastructure.\nStatement: Grouping Projects A, B, and C together into a Program is appropriate only if managing them collectively yields coordinated benefits not achievable individually.",
+            correctAnswer: "True",
+            explanation: "A Program is defined specifically as a group of related projects managed in a coordinated way to obtain specific benefits and control that could not be obtained from managing them individually."
+        },
+        {
+            id: 4,
+            question: "4. Statement: A Portfolio consists exclusively of interrelated projects and programs that directly depend on each other's deliverables to achieve technical execution.",
+            correctAnswer: "False",
+            explanation: "Portfolios group projects, programs, and operations primarily to maximize overall strategic value and resource allocation; components within a portfolio do not necessarily have to be interdependent or related."
+        },
+        {
+            id: 5,
+            question: "5. Scenario: During an executive steering meeting, a director argues that operational activities should be funded under the project management baseline since both projects and operations utilize corporate capital.\nStatement: Operations and Projects share the exact same structural characteristics because both are temporary endeavors aimed at creating unique deliverables.",
+            correctAnswer: "False",
+            explanation: "Projects are temporary endeavors designed to create unique outputs or values, whereas operations are ongoing, repetitive business activities focused on sustaining organizational capability."
+        },
+        {
+            id: 6,
+            question: "6. Scenario: A PMO establishes standardized reporting templates, provides project manager training, and conducts quality audits across all organizational initiatives.\nStatement: The primary purpose of a Project Management Office (PMO) is limited strictly to direct day-to-day tactical execution of individual project tasks.",
+            correctAnswer: "False",
+            explanation: "A PMO is an organizational structure tasked primarily with centralizing, standardizing, and supporting governance, governance frameworks, portfolio evaluation, and management practices."
+        },
+        {
+            id: 7,
+            question: "7. Scenario: A healthcare facility initiates a digitalization project to replace paper records. Upon project closure, the electronic system is operational.\nStatement: The continuous maintenance, security updating, and daily user support of the electronic records system post-implementation fall under the responsibility of project management.",
+            correctAnswer: "False",
+            explanation: "Post-implementation maintenance and ongoing day-to-day operations are handled by operational business units, not by the temporary project management lifecycle."
+        },
+        {
+            id: 8,
+            question: "8. Statement: A Project Management Team comprises all individuals who perform the actual hands-on project tasks, regardless of whether they participate in administrative or leadership decision-making.",
+            correctAnswer: "False",
+            explanation: "The 'Project Team' includes everyone working on the project, whereas the 'Project Management Team' refers specifically to the subset of team members directly involved in project management and leadership activities."
+        },
+        {
+            id: 9,
+            question: "9. Scenario: A project manager updates the Risk Register and the Stakeholder Engagement Plan during regular monitoring.\nStatement: Both the Risk Register and Stakeholder Engagement Plan are categorized as project artifacts.",
+            correctAnswer: "True",
+            explanation: "An artifact is any document, plan, model, or template created during the project lifecycle to manage and govern the initiative."
+        },
+        {
+            id: 10,
+            question: "10. Statement: The Value Delivery System within an organization functions strictly as a isolated top-down control mechanism, operating independently from internal organizational culture and external environmental factors.",
+            correctAnswer: "False",
+            explanation: "The Value Delivery System operates within a dynamic internal environment (culture, structure) and external ecosystem (market conditions, regulations) and must continuously adapt to deliver strategic value."
+        }
+    ];
+
+    // Render Questions
+    const container = document.getElementById('questionsContainer');
+    quizQuestions.forEach(q => {
+        container.innerHTML += `
+            <div class="question-card" id="card-${q.id}">
+                <div class="question-text">${q.question}</div>
+                <div class="options-group">
+                    <label>
+                        <input type="radio" name="q-${q.id}" value="True"> True
+                    </label>
+                    <label>
+                        <input type="radio" name="q-${q.id}" value="False"> False
+                    </label>
+                </div>
+                <div class="explanation-box" id="exp-${q.id}">
+                    <strong>Explanation:</strong> ${q.explanation}
+                </div>
+            </div>
+        `;
+    });
+
+    // Check Answers and Submit
+    function checkAnswers() {
+        const studentName = document.getElementById('studentName').value.trim();
+        const studentEmail = document.getElementById('studentEmail').value.trim();
+        const resultDiv = document.getElementById('result');
+        const submitBtn = document.getElementById('submitBtn');
+
+        if (!studentName || !studentEmail) {
+            alert('Please enter both your Full Name and Email before submitting.');
+            return;
+        }
+
+        // Validate that all questions are answered
+        let unanswered = false;
+        quizQuestions.forEach(q => {
+            const selected = document.querySelector(`input[name="q-${q.id}"]:checked`);
+            if (!selected) unanswered = true;
+        });
+
+        if (unanswered) {
+            alert('Please answer all 10 questions before submitting.');
+            return;
+        }
+
+        // Stop Timer
+        clearInterval(timerInterval);
+        const durationText = document.getElementById('timer').innerText.replace('Time: ', '');
+
+        let score = 0;
+
+        quizQuestions.forEach(q => {
+            const selected = document.querySelector(`input[name="q-${q.id}"]:checked`).value;
+            const card = document.getElementById(`card-${q.id}`);
+            const expBox = document.getElementById(`exp-${q.id}`);
+
+            card.classList.remove('correct', 'incorrect');
+
+            if (selected === q.correctAnswer) {
+                score++;
+                card.classList.add('correct');
+                expBox.style.display = 'none';
+            } else {
+                card.classList.add('incorrect');
+                expBox.style.display = 'block';
+            }
+        });
+
+        const percentageText = Math.round((score / quizQuestions.length) * 100) + "%";
+        
+        resultDiv.innerHTML = `Great job, ${studentName}!<br>Your Score: ${score} / ${quizQuestions.length} (${percentageText})<br><small style="font-size:14px; font-weight:normal; color:#6b7280;">Submitting results to system...</small>`;
+        resultDiv.style.color = score >= 8 ? '#059669' : '#1e40af';
+
+        // Disable submit button to prevent double-post
+        submitBtn.disabled = true;
+
+        // Send Data to Google Sheets
+        sendDataToGoogleSheet(studentName, studentEmail, score, quizQuestions.length, percentageText, durationText);
+    }
+
+    function sendDataToGoogleSheet(studentName, studentEmail, score, totalQuestions, percentageText, durationText) {
+        const payload = {
+            quizName: QUIZ_CONFIG.quizName,
+            studentName: studentName,
+            studentEmail: studentEmail,
+            examDuration: durationText,
+            score: `${score} / ${totalQuestions}`,
+            percentage: percentageText
+        };
+
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `Great job, ${studentName}!<br>Your Score: ${score} / ${totalQuestions} (${percentageText})<br><span style="font-size:15px; color:#10b981;">✔ Results saved successfully under tab "${QUIZ_CONFIG.quizName}"!</span>`;
+        })
+        .catch(error => {
+            console.error("Error submitting results:", error);
+            alert("Results calculated, but failed to save online. Please check network connection.");
+        });
+    }
+</script>
+
+</body>
+</html>
