@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PMP Business Environment Quiz 1</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f6f9; color: #333; }
+        .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #1f2937; margin-bottom: 5px; }
+        .quiz-header-title { text-align: center; font-size: 14px; color: #6b7280; font-weight: bold; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        .student-info { background: #eff6ff; border: 1px solid #bfdbfe; padding: 15px; border-radius: 6px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .student-info div { display: flex; flex-direction: column; }
+        .student-info label { font-weight: bold; font-size: 14px; color: #1e40af; margin-bottom: 5px; }
+        .student-info input { padding: 10px; border: 1px solid #93c5fd; border-radius: 4px; font-size: 15px; box-sizing: border-box; }
+        .instructions { background: #e5e7eb; padding: 15px; border-radius: 5px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
+        .timer-box { font-weight: bold; color: #dc2626; background: #fee2e2; padding: 6px 12px; border-radius: 4px; border: 1px solid #fca5a5; }
+        
+        /* Question Card Styling */
+        .question-card { background: #fafafa; border: 1px solid #e5e7eb; border-radius: 6px; padding: 18px; margin-bottom: 20px; transition: all 0.3s ease; }
+        .question-card.correct { background-color: #f0fdf4; border-color: #86efac; }
+        .question-card.incorrect { background-color: #fef2f2; border-color: #fca5a5; }
+        .question-text { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 12px; line-height: 1.5; white-space: pre-line; }
+        
+        .options-group { display: flex; gap: 20px; margin-bottom: 8px; }
+        .options-group label { font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 500; }
+        .options-group input[type="radio"] { width: 18px; height: 18px; cursor: pointer; }
+        
+        .explanation-box { margin-top: 12px; padding: 10px 14px; background: #fff; border-left: 4px solid #dc2626; border-radius: 4px; font-size: 14px; color: #991b1b; display: none; line-height: 1.4; }
+        .explanation-box strong { font-weight: bold; }
+        
+        .btn-submit { display: block; width: 100%; padding: 14px; background-color: #10b981; color: white; border: none; font-size: 17px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 25px; }
+        .btn-submit:hover { background-color: #059669; }
+        .btn-submit:disabled { background-color: #9ca3af; cursor: not-allowed; }
+        #result { margin-top: 25px; font-size: 20px; font-weight: bold; text-align: center; line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="quiz-header-title">PMP350-01/26 | BUSINESS ENVIRONMENT MODULE</div>
+    <h1>PMP Business Environment Quiz 1</h1>
+    
+    <div class="student-info">
+        <div>
+            <label for="studentName">Student Name / اسم الطالب *</label>
+            <input type="text" id="studentName" placeholder="Enter your full name..." required>
+        </div>
+        <div>
+            <label for="studentEmail">Student Email / البريد الإلكتروني *</label>
+            <input type="email" id="studentEmail" placeholder="Enter your email address..." required>
+        </div>
+    </div>
+
+    <div class="instructions">
+        <span><strong>Instructions:</strong> Read each scenario carefully and select whether the statement is <strong>True</strong> or <strong>False</strong>.</span>
+        <span class="timer-box" id="timer">Time: 00:00</span>
+    </div>
+
+    <form id="quizForm">
+        <div id="questionsContainer">
+            <!-- Questions rendered via JS -->
+        </div>
+        <button type="button" id="submitBtn" class="btn-submit" onclick="checkAnswers()">Submit Answers</button>
+    </form>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    // Integration Setup
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh6IDiXSyo4Qkvcioml5hNT-UP8pENsK8QBPn2Cj7nFkAmqY0HPamMBLUIVqQCiJly/exec";
+    const QUIZ_CONFIG = {
+        quizName: "PMP_Business_Environment_Quiz_1"
+    };
+
+    // Timer Variables
+    let startTime = Date.now();
+    let timerInterval = setInterval(updateTimer, 1000);
+
+    function updateTimer() {
+        let elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+        let minutes = Math.floor(elapsedTime / 60).toString().padStart(2, '0');
+        let seconds = (elapsedTime % 60).toString().padStart(2, '0');
+        document.getElementById('timer').innerText = `Time: ${minutes}:${seconds}`;
+    }
+
+    // 15 Scenario-based True / False Questions from Business Environment
+    const quizQuestions = [
+        {
+            id: 1,
+            question: "1. Scenario: A project manager is leading a software development project. The team successfully delivers all features defined in the scope baseline within budget and two weeks ahead of schedule. However, end-users report that the system does not solve their primary business operational bottleneck.\nStatement: Under modern project management principles, this project must be evaluated as an absolute project success because it strictly met the schedule, budget, and scope baselines.",
+            correctAnswer: "False",
+            explanation: "Modern project management emphasizes a systems view where projects must enable outputs to drive outcomes that ultimately deliver value. Success relies on value creation and addressing core business needs/problems, not merely completing scope within schedule and budget constraints."
+        },
+        {
+            id: 2,
+            question: "2. Scenario: An organization is establishing a new PMO. The executive board decides that the PMO will focus entirely on developing standardized templates, providing coaching and training to project managers, and archiving lessons learned.\nStatement: This structure represents a 'Directive PMO' framework.",
+            correctAnswer: "False",
+            explanation: "Providing templates, best practices, training, and coaching defines a Supportive PMO. A Directive PMO directly manages projects and resources with high authority."
+        },
+        {
+            id: 3,
+            question: "3. Scenario: A manufacturing enterprise operates within a traditional Functional structure. The General Manager appoints a functional employee to coordinate a cross-departmental initiative.\nStatement: In this organizational structure, the appointed person acts with full-time authority and high control over assigned project team members.",
+            correctAnswer: "False",
+            explanation: "In a Functional structure, the PM role is seldom formal (often acting merely as a coordinator/expediter), has non-existent authority over team members, and team members remain under the direct control of functional managers."
+        },
+        {
+            id: 4,
+            question: "4. Scenario: A multi-national corporation groups three major construction initiatives and two software modernization efforts under a single Portfolio. The software projects do not share deliverables or technical components with the construction initiatives.\nStatement: Grouping these unrelated initiatives under one Portfolio violates project management standards because portfolio components must be interdependent and directly related.",
+            correctAnswer: "False",
+            explanation: "Portfolios group projects, programs, and operations to achieve strategic business objectives and maximize overall value; components within a portfolio do NOT need to be directly related or interdependent. (Programs require component interdependencies, whereas Portfolios do not)."
+        },
+        {
+            id: 5,
+            question: "5. Scenario: A project manager is managing an adaptive project. During iteration planning, the product owner decides to postpone a non-essential feature to prioritize a higher-value requirement.\nStatement: According to the 'Focus on Value' principle, value per unit of investment is the ultimate indicator of project success, and teams must continually adapt project progress to maximize expected value.",
+            correctAnswer: "True",
+            explanation: "Correct. Value per unit of investment is the ultimate indicator of success, and the team continually evaluates progress and adapts to maximize intended benefits and business outcomes."
+        },
+        {
+            id: 6,
+            question: "6. Scenario: A project team adopts an Agile methodology. The Agile Coach instructs the team that quality inspections should only occur during the final testing phase right before customer deployment to maintain velocity.\nStatement: This strategy aligns with the core project management principle of 'Embed Quality into Processes and Deliverables'.",
+            correctAnswer: "False",
+            explanation: "The principle requires embedding quality throughout processes and deliverables continuously, ensuring processes are effective and meeting acceptance criteria early, rather than relying solely on end-of-project inspection."
+        },
+        {
+            id: 7,
+            question: "7. Scenario: A project manager in a Matrix organization notices that team members are struggling with competing priorities assigned by their respective Functional Managers and the Project Manager.\nStatement: In a Matrix organizational structure, team members typically experience conflicted loyalty and dual reporting lines.",
+            correctAnswer: "True",
+            explanation: "In Matrix structures, authority and control are shared between Functional Managers and Project Managers, leading to dual reporting and conflicted loyalty among team members."
+        },
+        {
+            id: 8,
+            question: "8. Scenario: An organization sets up an Agile Center of Excellence (ACoE) / Value Delivery Office (VDO) to accelerate digital transformation.\nStatement: The primary role of an ACoE is to directly manage shared resources, assign daily tasks to agile developers, and enforce rigid corporate audit compliance.",
+            correctAnswer: "False",
+            explanation: "ACoEs (or VDOs) enable rather than manage project efforts. They coach teams, build agile mindsets and skills, and mentor sponsors and product owners."
+        },
+        {
+            id: 9,
+            question: "9. Scenario: During a project steering committee meeting, a senior leader states that accountability for integrating environmental and social sustainability practices rests exclusively on the corporate compliance officer, not the project manager or team.\nStatement: This statement reflects standard Project Management Principles regarding sustainability integration.",
+            correctAnswer: "False",
+            explanation: "Project managers, project teams, and sponsors are all jointly accountable for consistently integrating sustainability practices across all project areas and throughout all phases of the project life cycle."
+        },
+        {
+            id: 10,
+            question: "10. Scenario: An engineering firm decides to build a complex bridge. The project lifecycle begins with detailed feasibility, followed by design, construction, checking, and transfer in a distinct, sequential sequence.\nStatement: This approach represents a Predictive Development Approach.",
+            correctAnswer: "True",
+            explanation: "A plan-based approach where activities are completed in a distinct or linear fashion and a new phase begins only when the previous is completed is the definition of a Predictive Life Cycle."
+        },
+        {
+            id: 11,
+            question: "11. Scenario: A software development team follows the Agile Manifesto principles. The project lead demands that the developers produce comprehensive, 200-page specification documentation before writing any executable code.\nStatement: This demand aligns with the values outlined in the Agile Manifesto for Software Development.",
+            correctAnswer: "False",
+            explanation: "The Agile Manifesto explicitly values 'Working software over comprehensive documentation'. While documentation has value, working software is valued more."
+        },
+        {
+            id: 12,
+            question: "12. Scenario: A project manager leading an enterprise resource planning (ERP) rollout encourages team members to make tactical decisions independently, voice concerns freely, and contribute recommendations proactively.\nStatement: This management style demonstrates the principle of 'Build an Empowered Culture'.",
+            correctAnswer: "True",
+            explanation: "An empowered culture fosters proactive collaboration, enables stakeholders and team members to contribute ideas freely, and empowers them across many dimensions to maximize value delivery."
+        },
+        {
+            id: 13,
+            question: "13. Scenario: A project manager focuses exclusively on technical schedule tracking and cost variances while ignoring stakeholder relationship dynamics, organizational culture, and broader environmental impacts.\nStatement: This approach exemplifies the 'Adopt a Holistic View' principle.",
+            correctAnswer: "False",
+            explanation: "Adopting a holistic view requires considering all interconnected elements across the entire lifecycle, integrating organizational factors, managing risks across all domains, and engaging stakeholders broadly."
+        },
+        {
+            id: 14,
+            question: "14. Scenario: A company initiates a project that uses an Adaptive development approach during the research and prototyping phase, followed by a Predictive rollout during the mass deployment phase.\nStatement: This life cycle is classified as a Hybrid Development Approach.",
+            correctAnswer: "True",
+            explanation: "Hybrid approaches combine both predictive and adaptive development approaches (e.g., adaptive development followed by a predictive rollout)."
+        },
+        {
+            id: 15,
+            question: "15. Scenario: A Scrum team completes a 2-week Sprint. Instead of reviewing their processes, the Scrum Master cancels the retrospective meeting to save time for the next Sprint planning.\nStatement: Canceling the retrospective violates Principle #12 of the Agile Manifesto.",
+            correctAnswer: "True",
+            explanation: "Principle #12 behind the Agile Manifesto states: 'At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behavior accordingly'."
+        }
+    ];
+
+    // Render Questions
+    const container = document.getElementById('questionsContainer');
+    quizQuestions.forEach(q => {
+        container.innerHTML += `
+            <div class="question-card" id="card-${q.id}">
+                <div class="question-text">${q.question}</div>
+                <div class="options-group">
+                    <label>
+                        <input type="radio" name="q-${q.id}" value="True"> True
+                    </label>
+                    <label>
+                        <input type="radio" name="q-${q.id}" value="False"> False
+                    </label>
+                </div>
+                <div class="explanation-box" id="exp-${q.id}">
+                    <strong>Explanation:</strong> ${q.explanation}
+                </div>
+            </div>
+        `;
+    });
+
+    // Check Answers and Submit
+    function checkAnswers() {
+        const studentName = document.getElementById('studentName').value.trim();
+        const studentEmail = document.getElementById('studentEmail').value.trim();
+        const resultDiv = document.getElementById('result');
+        const submitBtn = document.getElementById('submitBtn');
+
+        if (!studentName || !studentEmail) {
+            alert('Please enter both your Full Name and Email before submitting.');
+            return;
+        }
+
+        // Validate that all questions are answered
+        let unanswered = false;
+        quizQuestions.forEach(q => {
+            const selected = document.querySelector(`input[name="q-${q.id}"]:checked`);
+            if (!selected) unanswered = true;
+        });
+
+        if (unanswered) {
+            alert('Please answer all 15 questions before submitting.');
+            return;
+        }
+
+        // Stop Timer
+        clearInterval(timerInterval);
+        const durationText = document.getElementById('timer').innerText.replace('Time: ', '');
+
+        let score = 0;
+
+        quizQuestions.forEach(q => {
+            const selected = document.querySelector(`input[name="q-${q.id}"]:checked`).value;
+            const card = document.getElementById(`card-${q.id}`);
+            const expBox = document.getElementById(`exp-${q.id}`);
+
+            card.classList.remove('correct', 'incorrect');
+
+            if (selected === q.correctAnswer) {
+                score++;
+                card.classList.add('correct');
+                expBox.style.display = 'none';
+            } else {
+                card.classList.add('incorrect');
+                expBox.style.display = 'block';
+            }
+        });
+
+        const percentageText = Math.round((score / quizQuestions.length) * 100) + "%";
+        
+        resultDiv.innerHTML = `Great job, ${studentName}!<br>Your Score: ${score} / ${quizQuestions.length} (${percentageText})<br><small style="font-size:14px; font-weight:normal; color:#6b7280;">Submitting results to system...</small>`;
+        resultDiv.style.color = score >= 11 ? '#059669' : '#1e40af';
+
+        // Disable submit button to prevent double-post
+        submitBtn.disabled = true;
+
+        // Send Data to Google Sheets
+        sendDataToGoogleSheet(studentName, studentEmail, score, quizQuestions.length, percentageText, durationText);
+    }
+
+    function sendDataToGoogleSheet(studentName, studentEmail, score, totalQuestions, percentageText, durationText) {
+        const payload = {
+            quizName: QUIZ_CONFIG.quizName,
+            studentName: studentName,
+            studentEmail: studentEmail,
+            examDuration: durationText,
+            score: `${score} / ${totalQuestions}`,
+            percentage: percentageText
+        };
+
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `Great job, ${studentName}!<br>Your Score: ${score} / ${totalQuestions} (${percentageText})<br><span style="font-size:15px; color:#10b981;">✔ Results saved successfully under tab "${QUIZ_CONFIG.quizName}"!</span>`;
+        })
+        .catch(error => {
+            console.error("Error submitting results:", error);
+            alert("Results calculated, but failed to save online. Please check network connection.");
+        });
+    }
+</script>
+
+</body>
+</html>
