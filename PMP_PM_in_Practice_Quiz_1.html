@@ -1,0 +1,112 @@
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh6IDiXSyo4Qkvcioml5hNT-UP8pENsK8QBPn2Cj7nFkAmqY0HPamMBLUIVqQCiJly/exec";
+
+const quizData = {
+  quizName: "PMP_PM_in_Practice_Quiz_1",
+  questions: [
+    {
+      id: 1,
+      type: "tf",
+      question: "Scenario: In a predictive software project, the project manager leaves the development team to completely self-organize without setting direction or making key coordination decisions. True or False: This centralized coordination model aligns with PMI standard practice for predictive environments.",
+      answer: false,
+      explanation: "False. Centralized coordination is led and guided by a designated project manager who sets direction, makes decisions, and coordinates work, which is ideal for predictive projects[cite: 89, 90]. Allowing full self-organization without guidance represents a decentralized model best suited for agile projects[cite: 89, 90]."
+    },
+    {
+      id: 2,
+      type: "tf",
+      question: "Scenario: A organization is launching a complex transformation program. Executive leadership expects the project manager to handle all resource provisioning independently. True or False: Key organizational leadership functions include securing project funding, authority, equipment, and personnel to support delivery.",
+      answer: true,
+      explanation: "True. Providing resources—such as securing funding, authority, equipment, and personnel—is an essential function carried out by organizational leadership to ensure smooth project execution[cite: 91]."
+    },
+    {
+      id: 3,
+      type: "tf",
+      question: "Scenario: A newly assigned project manager believes their primary duty is solely directing team activities. True or False: According to PMI standards, project success relies on leadership roles facilitating collaboration, building consensus, and guiding teams through change.",
+      answer: true,
+      explanation: "True. Leadership roles drive success by encouraging collaboration, building consensus, resolving conflicts, guiding teams through change, and providing regular feedback[cite: 91]."
+    },
+    {
+      id: 4,
+      type: "tf",
+      question: "Scenario: An agile team working on a digital product features team members who fluidly assume leadership roles as needs evolve. True or False: This team structure is an example of a self-organizing, cross-functional team.",
+      answer: true,
+      explanation: "True. A self-organizing team is a cross-functional group in which members fluidly assume leadership as needed to achieve objectives[cite: 93]."
+    },
+    {
+      id: 5,
+      type: "tf",
+      question: "Scenario: A project manager in a construction firm adopts servant leadership by strictly dictating daily tasks and enforcing rigid top-down rules. True or False: This approach demonstrates servant leadership principles.",
+      answer: false,
+      explanation: "False. Servant leadership is the practice of leading by understanding and addressing the development and needs of team members to enable high performance, not by top-down dictation[cite: 93]."
+    },
+    {
+      id: 6,
+      type: "tf",
+      question: "Scenario: During resource planning, a project manager relies on a single developer who holds unique technical knowledge. True or False: Relying on a single expert for a critical task creates a single point of failure and should be mitigated by developing cross-functional skills.",
+      answer: true,
+      explanation: "True. Guidelines emphasize avoiding single points of failure where only one resource possesses a required skill, recommending cross-functional teams instead[cite: 96]."
+    },
+    {
+      id: 7,
+      type: "tf",
+      question: "Scenario: A project manager seeks team members who have deep expertise in one specific domain while possessing a broad set of skills across other areas. True or False: These individuals are referred to as T-shaped people or generalizing specialists.",
+      answer: true,
+      explanation: "True. T-shaped individuals and generalizing specialists have one core area of deep specialization combined with a broad range of general skills[cite: 96]."
+    },
+    {
+      id: 8,
+      type: "tf",
+      question: "Scenario: When building a project team, the project manager selects only deep specialists with no overlap in skills. True or False: Utilizing T-shaped people helps reduce work stoppages and resource shortages when key personnel are unavailable.",
+      answer: true,
+      explanation: "True. T-shaped team members provide versatility, increase organizational flexibility, and prevent work stoppages caused by resource shortages[cite: 97]."
+    },
+    {
+      id: 9,
+      type: "tf",
+      question: "Scenario: A project manager independently writes and dictates all workplace behavior rules without consulting the team. True or False: A Team Charter and ground rules should be established together with the team at the beginning of the project.",
+      answer: false,
+      explanation: "False. The Team Charter and ground rules should be created collaboratively with the project team to establish shared values and acceptable behavior[cite: 101, 103]."
+    },
+    {
+      id: 10,
+      type: "tf",
+      question: "Scenario: The PMI Code of Ethics and Professional Conduct outlines core values for project practitioners. True or False: The four foundational values defined by PMI are Responsibility, Respect, Fairness, and Honesty.",
+      answer: true,
+      explanation: "True. The four values that drive ethical conduct in the PMI Code of Ethics are Responsibility, Respect, Fairness, and Honesty[cite: 102]."
+    },
+    {
+      id: 11,
+      type: "tf",
+      question: "Scenario: An enterprise project manager needs specialized technical guidance that is unavailable within the immediate project team. True or False: Expert judgment can only be gathered from within the internal project management team.",
+      answer: false,
+      explanation: "False. Expert judgment can be obtained from external sources including consultants, stakeholders, professional/technical associations, and historical data[cite: 99]."
+    },
+    {
+      id: 12,
+      type: "tf",
+      question: "Scenario: A global firm manages a project with team members located across multiple time zones. True or False: Co-location refers to a arrangement where team members work remotely using digital collaboration tools.",
+      answer: false,
+      explanation: "False. Co-location is an organizational strategy where team members are physically located close to one another to improve communication and productivity[cite: 106]. Working remotely describes a virtual team setup[cite: 106]."
+    },
+    {
+      id: 13,
+      type: "tf",
+      question: "Scenario: A project manager leads a fully virtual software delivery team. True or False: To ensure cohesion, the project manager must establish clear purpose, role clarity, shared goals, and prioritized collaboration.",
+      answer: true,
+      explanation: "True. Addressing virtual team needs requires fostering cohesion, defining clear roles and purpose, aligning shared goals, and ensuring collaboration[cite: 109]."
+    },
+    {
+      id: 14,
+      type: "tf",
+      question: "Scenario: During team formation, a project manager conducts a SWOT analysis. True or False: Conducting a SWOT analysis helps identify team strengths, weaknesses, threats, and opportunities to improve overall performance.",
+      answer: true,
+      explanation: "True. Focusing on team strengths involves organizing around capabilities, recognizing weaknesses, and using SWOT analysis to identify opportunities and threats[cite: 100]."
+    },
+    {
+      id: 15,
+      type: "tf",
+      question: "Scenario: In a hybrid project environment, communication channels are established at launch. True or False: Project managers should regularly check and evaluate communication mechanisms through retrospectives to ensure ongoing alignment.",
+      answer: true,
+      explanation: "True. Project managers should check communications regularly and use retrospectives to discuss and implement ongoing communication improvements[cite: 105]."
+    }
+  ]
+};
