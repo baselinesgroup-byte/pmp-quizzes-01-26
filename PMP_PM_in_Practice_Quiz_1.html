@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PMP PM in Practice Quiz 1</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        .question-card { border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; border-radius: 8px; }
+        .options button { margin-right: 10px; padding: 8px 16px; cursor: pointer; }
+        .explanation { margin-top: 10px; color: #333; background: #f0f0f0; padding: 10px; display: none; }
+    </style>
+</head>
+<body>
+
+    <h1>اختبار: PMP PM in Practice Quiz 1</h1>
+    <div id="quiz-container"></div>
+
+    <script>
+        // كود البيانات الخاص بك
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh6IDiXSyo4Qkvcioml5hNT-UP8pENsK8QBPn2Cj7nFkAmqY0HPamMBLUIVqQCiJly/exec";
+
+        const quizData = {
+          quizName: "PMP_PM_in_Practice_Quiz_1",
+          questions: [
+            {
+              id: 1,
+              type: "tf",
+              question: "Scenario: In a predictive software project, the project manager leaves the development team to completely self-organize without setting direction or making key coordination decisions. True or False: This centralized coordination model aligns with PMI standard practice for predictive environments.",
+              answer: false,
+              explanation: "False. Centralized coordination is led and guided by a designated project manager who sets direction, makes decisions, and coordinates work..."
+            }
+            // باقي الأسئلة هنا...
+          ]
+        };
+
+        // دالة عرض الأسئلة على الصفحة
+        const container = document.getElementById('quiz-container');
+        quizData.questions.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.innerHTML = `
+                <p><strong>سؤال ${index + 1}:</strong> ${q.question}</p>
+                <div class="options">
+                    <button onclick="checkAnswer(${q.id}, true)">True</button>
+                    <button onclick="checkAnswer(${q.id}, false)">False</button>
+                </div>
+                <div id="exp-${q.id}" class="explanation">${q.explanation}</div>
+            `;
+            container.appendChild(card);
+        });
+
+        function checkAnswer(qId, userAnswer) {
+            const q = quizData.questions.find(item => item.id === qId);
+            const expDiv = document.getElementById(`exp-${qId}`);
+            expDiv.style.display = "block";
+            if(userAnswer === q.answer) {
+                expDiv.style.borderRight = "4px solid green";
+            } else {
+                expDiv.style.borderRight = "4px solid red";
+            }
+        }
+    </script>
+</body>
+</html>
