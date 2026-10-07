@@ -233,114 +233,196 @@
 </div>
 
 <script>
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh6IDiXSyo4Qkvcioml5hNT-UP8pENsK8QBPn2Cj7nFkAmqY0HPamMBLUIVqQCiJly/exec";
-    const quizName = "PMP_Business_Environment_Quiz_3";
+    document.addEventListener("DOMContentLoaded", function() {
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh6IDiXSyo4Qkvcioml5hNT-UP8pENsK8QBPn2Cj7nFkAmqY0HPamMBLUIVqQCiJly/exec";
+        const quizName = "PMP_Business_Environment_Quiz_3";
 
-    const quizData = [
-        {
-            id: 1,
-            scenario: "During project execution, the organization initiates an internal structural reorganization that impacts project resources. The project manager decides to issue a formal project change request to adjust baseline deliverables without consulting or assessing the organization's culture or stakeholder readiness.",
-            statement: "The project manager is taking the correct approach by strictly using project change control instead of applying organizational change management principles.",
-            correct: "False"
-        },
-        {
-            id: 2,
-            scenario: "A project manager is leading a software implementation project. To ensure smooth adoption by the operational staff, the project manager creates a detailed rollout plan that outlines training, knowledge transfer, and readiness activities.",
-            statement: "The rollout plan created by the project manager is considered a mandatory core component of the main Project Management Plan.",
-            correct: "False"
-        },
-        {
-            id: 3,
-            scenario: "A company is executing an enterprise transformation project. Some functional managers are hesitant to support the project's new operating model. To address this, the project manager applies the ADKAR® framework by first focusing on creating awareness of the need for change before trying to build desire or skills.",
-            statement: "Focusing on 'Awareness' as the first milestone in the ADKAR® model aligns with effective change management practices.",
-            correct: "True"
-        },
-        {
-            id: 4,
-            scenario: "A senior project manager is mentoring a project team on organizational culture. She explains that risk appetite and tolerance are identical across all regions and industries because they are defined solely by corporate leadership.",
-            statement: "Risk threshold and appetite are fixed variables determined exclusively by organizational leadership regardless of country or project team context.",
-            correct: "False"
-        },
-        {
-            id: 5,
-            scenario: "During an Agile release planning session, a sponsor asks the project manager why project governance is necessary when using an adaptive life cycle. The project manager explains that governance in adaptive projects provides visibility through iteration expectations, planned release dates, and daily standups.",
-            statement: "Project governance applies to adaptive projects by utilizing iteration outputs, release schedules, and real-time monitoring through daily standups.",
-            correct: "True"
-        },
-        {
-            id: 6,
-            scenario: "An organization enforces a rigid project governance framework that requires executive approval for every minor task re-assignment within a project team.",
-            statement: "Increasing project governance controls to the highest possible level always guarantees higher stakeholder engagement and improved project accountability.",
-            correct: "False"
-        },
-        {
-            id: 7,
-            scenario: "A project manager is managing a complex engineering project with strict budget constraints. The governance framework establishes clear variance thresholds for cost deviations.",
-            statement: "If a budget issue occurs within the established tolerance threshold, the project manager must immediately escalate the problem to the governance board for resolution.",
-            correct: "False"
-        },
-        {
-            id: 8,
-            scenario: "An enterprise project uses Scrum to deliver a new digital platform. To align the project's daily execution with overarching corporate governance policies, the organization utilizes an intermediary governance board.",
-            statement: "Projects utilizing frameworks such as Scrum or SAFe® can use intermediary governance boards to bridge project activities with organizational governance.",
-            correct: "True"
-        },
-        {
-            id: 9,
-            scenario: "A project manager is leading a multi-year construction project. As the project approaches the end of Phase 1, the steering committee conducts a Phase Gate review.",
-            statement: "A Phase Gate review (also known as a kill point or tollgate) is strictly limited to approving a project to move to the next phase.",
-            correct: "False"
-        },
-        {
-            id: 10,
-            scenario: "A project team is planning a predictive project divided into distinct consecutive phases where Phase 2 cannot start until Phase 1 is completely finished.",
-            statement: "This phase-to-phase structure represents an overlapping relationship between project phases.",
-            correct: "False"
-        },
-        {
-            id: 11,
-            scenario: "A project manager is managing a project under a predictive model. At the start of a new project phase, the project manager reviews project assumptions and analyzes potential risks associated with the upcoming work.",
-            statement: "Verifying project assumptions and analyzing risks are standard activities conducted at the beginning of a predictive project phase.",
-            correct: "True"
-        },
-        {
-            id: 12,
-            scenario: "A company is developing a new mobile application using Lean methodology. The product owner requests the delivery of a Minimum Viable Product (MVP) for early customer testing.",
-            statement: "A Minimum Viable Product (MVP) represents the complete, fully-featured final release of a product designed for maximum market penetration.",
-            correct: "False"
-        },
-        {
-            id: 13,
-            scenario: "A project manager in a pharmaceutical firm relies solely on the Project Management Office (PMO) to handle all project compliance responsibilities, assuming the project team is not accountable for compliance matters.",
-            statement: "Compliance responsibility for project activities, deliverable quality, and vendor procurement lies exclusively with the PMO, exempting the project team.",
-            correct: "False"
-        },
-        {
-            id: 14,
-            scenario: "A project manager leading a financial software development project registers compliance risks, assigns risk owners, documents potential impacts, and plans mitigation actions in a risk register.",
-            statement: "Treating compliance as a core project objective involves proactively tracking compliance risks, assigning risk owners, and continuously validating regulatory alignment.",
-            correct: "True"
-        },
-        {
-            id: 15,
-            scenario: "To ensure compliance across a high-risk infrastructure project, the project manager conducts compliance checks and quality audits exclusively after final deliverables are transferred to operations at the end of the project.",
-            statement: "Waiting until project handover to perform final compliance checks is the recommended best practice to avoid disturbing project execution.",
-            correct: "False"
-        }
-    ];
+        const quizData = [
+            {
+                id: 1,
+                scenario: "During project execution, the organization initiates an internal structural reorganization that impacts project resources. The project manager decides to issue a formal project change request to adjust baseline deliverables without consulting or assessing the organization's culture or stakeholder readiness.",
+                statement: "The project manager is taking the correct approach by strictly using project change control instead of applying organizational change management principles.",
+                correct: "False"
+            },
+            {
+                id: 2,
+                scenario: "A project manager is leading a software implementation project. To ensure smooth adoption by the operational staff, the project manager creates a detailed rollout plan that outlines training, knowledge transfer, and readiness activities.",
+                statement: "The rollout plan created by the project manager is considered a mandatory core component of the main Project Management Plan.",
+                correct: "False"
+            },
+            {
+                id: 3,
+                scenario: "A company is executing an enterprise transformation project. Some functional managers are hesitant to support the project's new operating model. To address this, the project manager applies the ADKAR framework by first focusing on creating awareness of the need for change before trying to build desire or skills.",
+                statement: "Focusing on 'Awareness' as the first milestone in the ADKAR model aligns with effective change management practices.",
+                correct: "True"
+            },
+            {
+                id: 4,
+                scenario: "A senior project manager is mentoring a project team on organizational culture. She explains that risk appetite and tolerance are identical across all regions and industries because they are defined solely by corporate leadership.",
+                statement: "Risk threshold and appetite are fixed variables determined exclusively by organizational leadership regardless of country or project team context.",
+                correct: "False"
+            },
+            {
+                id: 5,
+                scenario: "During an Agile release planning session, a sponsor asks the project manager why project governance is necessary when using an adaptive life cycle. The project manager explains that governance in adaptive projects provides visibility through iteration expectations, planned release dates, and daily standups.",
+                statement: "Project governance applies to adaptive projects by utilizing iteration outputs, release schedules, and real-time monitoring through daily standups.",
+                correct: "True"
+            },
+            {
+                id: 6,
+                scenario: "An organization enforces a rigid project governance framework that requires executive approval for every minor task re-assignment within a project team.",
+                statement: "Increasing project governance controls to the highest possible level always guarantees higher stakeholder engagement and improved project accountability.",
+                correct: "False"
+            },
+            {
+                id: 7,
+                scenario: "A project manager is managing a complex engineering project with strict budget constraints. The governance framework establishes clear variance thresholds for cost deviations.",
+                statement: "If a budget issue occurs within the established tolerance threshold, the project manager must immediately escalate the problem to the governance board for resolution.",
+                correct: "False"
+            },
+            {
+                id: 8,
+                scenario: "An enterprise project uses Scrum to deliver a new digital platform. To align the project's daily execution with overarching corporate governance policies, the organization utilizes an intermediary governance board.",
+                statement: "Projects utilizing frameworks such as Scrum or SAFe can use intermediary governance boards to bridge project activities with organizational governance.",
+                correct: "True"
+            },
+            {
+                id: 9,
+                scenario: "A project manager is leading a multi-year construction project. As the project approaches the end of Phase 1, the steering committee conducts a Phase Gate review.",
+                statement: "A Phase Gate review (also known as a kill point or tollgate) is strictly limited to approving a project to move to the next phase.",
+                correct: "False"
+            },
+            {
+                id: 10,
+                scenario: "A project team is planning a predictive project divided into distinct consecutive phases where Phase 2 cannot start until Phase 1 is completely finished.",
+                statement: "This phase-to-phase structure represents an overlapping relationship between project phases.",
+                correct: "False"
+            },
+            {
+                id: 11,
+                scenario: "A project manager is managing a project under a predictive model. At the start of a new project phase, the project manager reviews project assumptions and analyzes potential risks associated with the upcoming work.",
+                statement: "Verifying project assumptions and analyzing risks are standard activities conducted at the beginning of a predictive project phase.",
+                correct: "True"
+            },
+            {
+                id: 12,
+                scenario: "A company is developing a new mobile application using Lean methodology. The product owner requests the delivery of a Minimum Viable Product (MVP) for early customer testing.",
+                statement: "A Minimum Viable Product (MVP) represents the complete, fully-featured final release of a product designed for maximum market penetration.",
+                correct: "False"
+            },
+            {
+                id: 13,
+                scenario: "A project manager in a pharmaceutical firm relies solely on the Project Management Office (PMO) to handle all project compliance responsibilities, assuming the project team is not accountable for compliance matters.",
+                statement: "Compliance responsibility for project activities, deliverable quality, and vendor procurement lies exclusively with the PMO, exempting the project team.",
+                correct: "False"
+            },
+            {
+                id: 14,
+                scenario: "A project manager leading a financial software development project registers compliance risks, assigns risk owners, documents potential impacts, and plans mitigation actions in a risk register.",
+                statement: "Treating compliance as a core project objective involves proactively tracking compliance risks, assigning risk owners, and continuously validating regulatory alignment.",
+                correct: "True"
+            },
+            {
+                id: 15,
+                scenario: "To ensure compliance across a high-risk infrastructure project, the project manager conducts compliance checks and quality audits exclusively after final deliverables are transferred to operations at the end of the project.",
+                statement: "Waiting until project handover to perform final compliance checks is the recommended best practice to avoid disturbing project execution.",
+                correct: "False"
+            }
+        ];
 
-    // Timer Logic
-    let secondsElapsed = 0;
-    const timerElement = document.getElementById("timer");
-    const timerInterval = setInterval(() => {
-        secondsElapsed++;
-        const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
-        const secs = String(secondsElapsed % 60).padStart(2, '0');
-        timerElement.textContent = `Time: ${mins}:${secs}`;
-    }, 1000);
+        // Timer Logic
+        let secondsElapsed = 0;
+        const timerElement = document.getElementById("timer");
+        const timerInterval = setInterval(() => {
+            secondsElapsed++;
+            const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
+            const secs = String(secondsElapsed % 60).padStart(2, '0');
+            timerElement.textContent = `Time: ${mins}:${secs}`;
+        }, 1000);
 
-    // Render Questions
-    const container = document.getElementById("questionsContainer");
-    quizData.forEach((q, index) => {
-        const qCard = document.createElement("div");
-        qCard.className = "question-card";
+        // Render Questions
+        const container = document.getElementById("questionsContainer");
+        quizData.forEach((q, index) => {
+            const qCard = document.createElement("div");
+            qCard.className = "question-card";
+            qCard.innerHTML = `
+                <div class="question-text">
+                    ${index + 1}. Scenario: ${q.scenario}<br><br>
+                    Statement: ${q.statement}
+                </div>
+                <div class="options-group">
+                    <label class="option-label">
+                        <input type="radio" name="question_${q.id}" value="True" required> True
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="question_${q.id}" value="False" required> False
+                    </label>
+                </div>
+            `;
+            container.appendChild(qCard);
+        });
+
+        // Handle Form Submission
+        document.getElementById("quizForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById("submitBtn");
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Submitting...";
+            clearInterval(timerInterval);
+
+            const studentName = document.getElementById("studentName").value;
+            const studentEmail = document.getElementById("studentEmail").value;
+
+            let score = 0;
+            const userAnswers = {};
+
+            quizData.forEach(q => {
+                const selectedOption = document.querySelector(`input[name="question_${q.id}"]:checked`);
+                const answerVal = selectedOption ? selectedOption.value : "";
+                userAnswers[`Q${q.id}`] = answerVal;
+
+                if (answerVal === q.correct) {
+                    score++;
+                }
+            });
+
+            const timeSpent = timerElement.textContent.replace("Time: ", "");
+
+            // Payload for Google Apps Script
+            const payload = {
+                quizName: quizName,
+                studentName: studentName,
+                studentEmail: studentEmail,
+                score: `${score}/${quizData.length}`,
+                timeSpent: timeSpent,
+                answers: userAnswers
+            };
+
+            // Send Data to Google Sheets via POST Request
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(() => {
+                document.getElementById("quizForm").style.display = "none";
+                const resultBox = document.getElementById("resultContainer");
+                resultBox.style.display = "block";
+                document.getElementById("scoreDisplay").textContent = `Your Score: ${score} / ${quizData.length}`;
+            })
+            .catch(error => {
+                console.error("Error submitting quiz:", error);
+                alert("An error occurred while submitting your quiz. Please try again.");
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Submit Quiz";
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
