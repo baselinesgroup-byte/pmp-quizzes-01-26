@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PMP Business Environment Quiz 2</title>
+    <style>
+        :root {
+            --primary-color: #1a365d;
+            --secondary-color: #2b6cb0;
+            --accent-color: #319795;
+            --bg-color: #f7fafc;
+            --card-bg: #ffffff;
+            --text-color: #2d3748;
+            --correct-color: #38a169;
+            --incorrect-color: #e53e3e;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+
+        .user-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+            background-color: #edf2f7;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        label {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        input[type="text"], input[type="email"] {
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        input[type="text"]:focus, input[type="email"]:focus {
+            border-color: var(--secondary-color);
+        }
+
+        .question-card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .question-text {
+            font-weight: 600;
+            font-size: 1.05rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            direction: ltr;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .question-scenario {
+            background-color: #f8fafc;
+            border-left: 4px solid var(--secondary-color);
+            padding: 10px 15px;
+            margin-bottom: 12px;
+            font-style: italic;
+            color: #4a5568;
+        }
+
+        .options-container {
+            display: flex;
+            gap: 15px;
+            direction: ltr;
+            margin-bottom: 10px;
+        }
+
+        .option-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            background-color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .option-btn:hover {
+            border-color: var(--secondary-color);
+            background-color: #ebf8ff;
+        }
+
+        .option-btn.selected {
+            border-color: var(--secondary-color);
+            background-color: #bee3f8;
+        }
+
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            direction: ltr;
+            text-align: left;
+            line-height: 1.4;
+        }
+
+        .explanation.correct {
+            background-color: #c6f6d5;
+            color: #22543d;
+            border: 1px solid #9ae6b4;
+        }
+
+        .explanation.incorrect {
+            background-color: #fed7d7;
+            color: #742a2a;
+            border: 1px solid #feb2b2;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-submit:disabled {
+            background-color: #cbd5e0;
+            cursor: not-allowed;
+        }
+
+        #result-container {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #e6fffa;
+            border: 1px solid #b2f5ea;
+            border-radius: 8px;
+        }
+
+        #result-score {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            margin-top: 15px;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>PMP Business Environment Quiz 2</h1>
+    
+    <form id="quiz-form">
+        <div class="user-form">
+            <div class="form-group">
+                <label for="username">الاسم الكامل / Full Name:</label>
+                <input type="text" id="username" required placeholder="أدخل اسمك هنا">
+            </div>
+            <div class="form-group">
+                <label for="email">البريد الإلكتروني / Email Address:</label>
+                <input type="email" id="email" required placeholder="example@domain.com">
+            </div>
+        </div>
+
+        <div id="questions-container"></div>
+
+        <button type="submit" id="submit-btn" class="btn-submit">إرسال الإجابات / Submit Quiz</button>
+    </form>
+
+    <div id="loading" class="loading-spinner">جاري إرسال النتيجة وحفظ البيانات...</div>
+    
+    <div id="result-container">
+        <h2>النتيجة / Your Score</h2>
+        <p id="result-score"></p>
+        <p>تم إرسال إجاباتك بنجاح وتسجيلها في النظام.</p>
+    </div>
+</div>
+
+<script>
+    const quizName = "PMP_Business_Environment_Quiz_2";
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh6IDiXSyo4Qkvcioml5hNT-UP8pENsK8QBPn2Cj7nFkAmqY0HPamMBLUIVqQCiJly/exec";
+
+    const quizData = [
+        {
+            id: 1,
+            scenario: "A project manager is leading a software expansion project. During execution, the organization updates its internal hiring policies and procurement guidelines. The project manager considers these regulatory and policy changes to be Enterprise Environmental Factors (EEFs).",
+            statement: "The project manager is correct in classifying internal corporate policies and procurement rules as Enterprise Environmental Factors (EEFs).",
+            correctAnswer: "False",
+            explanation: "False: Internal processes, policies, procedures, and corporate knowledge bases (like procurement rules and hiring procedures) are classified as Organizational Process Assets (OPAs), not EEFs."
+        },
+        {
+            id: 2,
+            scenario: "An organization is considering two mutually exclusive projects. Project A has a project payback period of 12 months, while Project B has a payback period of 24 months.",
+            statement: "Based on the payback period criteria, the organization should select Project B because a higher payback value indicates a greater return on investment.",
+            correctAnswer: "False",
+            explanation: "False: When evaluating the payback period, 'smaller is better'. The organization should select Project A (12 months) because a shorter payback period means the organization recovers its initial investment faster."
+        },
+        {
+            id: 3,
+            scenario: "A project manager is working on a new product delivery strategy and needs to structure the Project Management Plan. The project manager decides to incorporate the Benefits Management Plan into the Project Management Plan as a baseline sub-document.",
+            statement: "The project manager's decision to include the Benefits Management Plan as an integral component of the Project Management Plan is correct.",
+            correctAnswer: "False",
+            explanation: "False: The Benefits Management Plan is a business document developed prior to or alongside project authorization; it is NOT part of the project management plan."
+        },
+        {
+            id: 4,
+            scenario: "An organization adopts the Objectives and Key Results (OKRs) goal-setting framework to align project outcomes with organizational objectives. The project team continuously achieves a 100% success rate across all their defined key results over three consecutive quarters.",
+            statement: "Achieving a 100% success rate in OKRs indicates ideal performance and means the key results are perfectly calibrated according to OKR best practices.",
+            correctAnswer: "False",
+            explanation: "False: Under OKR best practices, target success rates should aim for around 70% to encourage competitive and ambitious goal-making. A 100% success rate indicates that the goals are not challenging enough."
+        },
+        {
+            id: 5,
+            scenario: "A company is evaluating external market risks and technological uncertainty for a strategic transformation project. The project manager decides to use PESTLE and VUCA frameworks to analyze these factors.",
+            statement: "PESTLE and VUCA are appropriate management frameworks used specifically to assess external business environment factors affecting project outcomes and risks.",
+            correctAnswer: "True",
+            explanation: "True: Frameworks like PESTLE (Political, Economic, Socio-cultural, Technological, Legal, Environmental) and VUCA (Volatility, Uncertainty, Complexity, Ambiguity) are explicitly designed to evaluate external environmental influences and uncertainties."
+        },
+        {
+            id: 6,
+            scenario: "A project manager is conducting a pre-project review and notices that a Business Analyst has already completed a Needs Assessment.",
+            statement: "The Needs Assessment typically precedes the Business Case and is used to analyze business goals, issues, and opportunities to recommend actionable project solutions.",
+            correctAnswer: "True",
+            explanation: "True: A Needs Assessment is performed (usually by a business analyst) prior to the business case to examine organizational goals, constraints, and opportunities, recommending proposals to address them."
+        },
+        {
+            id: 7,
+            scenario: "A steering committee is choosing between two potential strategic projects. Project X offers a potential benefit of $500,000, while Project Y offers $350,000. The organization decides to select Project X.",
+            statement: "The opportunity cost of selecting Project X is $500,000.",
+            correctAnswer: "False",
+            explanation: "False: Opportunity Cost is defined as the value/return of the unselected project (the second-best option). Therefore, the opportunity cost of choosing Project X is the value of Project Y ($350,000)."
+        },
+        {
+            id: 8,
+            scenario: "A project manager is leading a multi-phase infrastructure project. To ensure the project continues to deliver business value, the project manager reviews the project business documents only once during the initiating stage before baseline approval.",
+            statement: "Business documents such as the Business Case should only be created and reviewed during project initiation to maintain scope stability.",
+            correctAnswer: "False",
+            explanation: "False: Business documents should be reviewed periodically throughout the project lifecycle to verify that the project remains aligned with business goals and continues to justify the investment."
+        },
+        {
+            id: 9,
+            scenario: "An organization initiates a project solely aimed at bringing the organization into compliance with new national data protection regulations.",
+            statement: "Compliance or regulatory alignment projects do not create business value because they do not yield direct financial gains.",
+            correctAnswer: "False",
+            explanation: "False: Business value includes both tangible and intangible benefits. Regularization (alignment/compliance with standards and regulations) is a recognized form of business value alongside financial gain and improvements."
+        },
+        {
+            id: 10,
+            scenario: "During an internal corporate restructuring, a company modifies its core operational priorities mid-way through an ongoing project.",
+            statement: "Internal business environment changes like corporate reorganizations can lead to a reprioritization of business value, potentially requiring the removal or addition of project deliverables.",
+            correctAnswer: "True",
+            explanation: "True: Internal business changes (reorganizations, business plans, process adjustments) directly impact project scope, necessitating the reprioritization of value, addition of deliverables, or removal of existing ones."
+        },
+        {
+            id: 11,
+            scenario: "A project manager in a functional organization is trying to enhance team collaboration. The project manager focuses heavily on mastering Agile delivery mechanisms and predictive scheduling software.",
+            statement: "According to the PMI Talent Triangle®, technical delivery methodologies and scheduling mechanics fall under the 'Power Skills' side of the triangle.",
+            correctAnswer: "False",
+            explanation: "False: Technical tools and methodologies (predictive, adaptive, design thinking) fall under 'Ways of Working'. 'Power Skills' refer to critical interpersonal skills used to influence, inspire, and build relationships."
+        },
+        {
+            id: 12,
+            scenario: "An organization is transitioning its project delivery approach to adaptive methods. The leadership insists on using Scrum ceremonies strictly, but maintains a rigid, change-resistant corporate mindset.",
+            statement: "Applying agile ceremonies and processes without adopting an agile mindset satisfies the principle of 'Being Agile' as defined in project management.",
+            correctAnswer: "False",
+            explanation: "False: Adopting practices without internalizing the values and mindset is merely 'Doing Agile'. 'Being Agile' requires internalizing agile values, mindset, and behavior to adapt contextually."
+        },
+        {
+            id: 13,
+            scenario: "A project manager is assigned to a hybrid project that combines hardware installation (predictive) and software development (adaptive).",
+            statement: "Tailoring is the deliberate adaptation of the project management approach, governance, and processes to fit the unique project environment and context.",
+            correctAnswer: "True",
+            explanation: "True: Tailoring is defined as the deliberate adaptation of the project management approach, governance, and processes to make them suitable for the environment and work at hand."
+        },
+        {
+            id: 14,
+            scenario: "A product management team decides to release software features in small, functional increments every two weeks rather than a single complete release after twelve months.",
+            statement: "Incremental value delivery delays overall customer feedback but maximizes the final product quality by avoiding partial previews.",
+            correctAnswer: "False",
+            explanation: "False: Incremental delivery enables early feedback, allows partial previews, delivers value sooner, and increases customer engagement/market share."
+        },
+        {
+            id: 15,
+            scenario: "A senior project manager is mentoring a junior project manager on financial evaluation metrics for project selection.",
+            statement: "The Net Present Value (NPV) calculation takes into account inflation and macro-economic factors (discount rate) when comparing current and future cash flows.",
+            correctAnswer: "True",
+            explanation: "True: Net Present Value (NPV) is used for capital budgeting and accounts for inflation and macro-economic changes (discount rate) to compare current and future currency values."
+        }
+    ];
+
+    const userAnswers = {};
+
+    function renderQuiz() {
+        const container = document.getElementById('questions-container');
+        quizData.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.id = `question-${q.id}`;
+
+            card.innerHTML = `
+                <div class="question-scenario"><strong>Scenario:</strong> ${q.scenario}</div>
+                <div class="question-text"><strong>Q${index + 1}:</strong> ${q.statement}</div>
+                <div class="options-container">
+                    <button type="button" class="option-btn" onclick="selectOption(${q.id}, 'True')">True</button>
+                    <button type="button" class="option-btn" onclick="selectOption(${q.id}, 'False')">False</button>
+                </div>
+                <div class="explanation" id="explanation-${q.id}"></div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function selectOption(questionId, selectedValue) {
+        userAnswers[questionId] = selectedValue;
+        const card = document.getElementById(`question-${questionId}`);
+        const buttons = card.querySelectorAll('.option-btn');
+        
+        buttons.forEach(btn => {
+            if (btn.innerText === selectedValue) {
+                btn.classList.add('selected');
+            } else {
+                btn.classList.remove('selected');
+            }
+        });
+    }
+
+    document.getElementById('quiz-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+
+        if (Object.keys(userAnswers).length < quizData.length) {
+            alert('يرجى الإجابة على جميع الأسئلة قبل الإرسال.');
+            return;
+        }
+
+        let score = 0;
+        quizData.forEach(q => {
+            const isCorrect = userAnswers[q.id] === q.correctAnswer;
+            if (isCorrect) score++;
+
+            const expDiv = document.getElementById(`explanation-${q.id}`);
+            expDiv.style.display = 'block';
+            expDiv.className = `explanation ${isCorrect ? 'correct' : 'incorrect'}`;
+            expDiv.innerText = q.explanation;
+        });
+
+        document.getElementById('submit-btn').disabled = true;
+        document.getElementById('loading').style.display = 'block';
+
+        const payload = {
+            quizName: quizName,
+            username: username,
+            email: email,
+            score: `${score} / ${quizData.length}`,
+            percentage: `${((score / quizData.length) * 100).toFixed(1)}%`,
+            timestamp: new Date().toISOString()
+        };
+
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            document.getElementById('loading').style.display = 'none';
+            const resultContainer = document.getElementById('result-container');
+            resultContainer.style.display = 'block';
+            document.getElementById('result-score').innerText = `${score} / ${quizData.length} (${((score / quizData.length) * 100).toFixed(1)}%)`;
+            resultContainer.scrollIntoView({ behavior: 'smooth' });
+        })
+        .catch(error => {
+            console.error('Error submitting quiz:', error);
+            document.getElementById('loading').style.display = 'none';
+            alert('حدث خطأ أثناء إرسال النتيجة، ولكن تم عرض التقييم أدناد.');
+        });
+    });
+
+    // Initialize Quiz
+    renderQuiz();
+</script>
+
+</body>
+</html>
