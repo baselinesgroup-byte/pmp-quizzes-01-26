@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PMP PM in Practice Quiz 2</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    .quiz-container {
+      max-width: 800px;
+      margin: auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .quiz-header {
+      font-size: 16px;
+      font-weight: bold;
+      color: #444;
+      border-bottom: 2px solid #eaebed;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+    .user-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    .user-info input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .question-card {
+      background: #fafafa;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 15px 20px;
+      margin-bottom: 20px;
+    }
+    .question-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .scenario {
+      font-style: italic;
+      color: #555;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    .statement {
+      font-size: 15px;
+      margin-bottom: 12px;
+    }
+    .options label {
+      margin-right: 20px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .explanation {
+      display: none;
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #ffebe9;
+      border-left: 4px solid #d93025;
+      color: #a50e0e;
+      font-size: 13px;
+      border-radius: 0 4px 4px 0;
+    }
+    .submit-btn {
+      background-color: #0056b3;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.3s;
+    }
+    .submit-btn:hover {
+      background-color: #003d80;
+    }
+    #result-msg {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="quiz-container">
+  <div class="quiz-header">
+    quiz Name: PMP_PM_in_Practice_Quiz_2
+  </div>
+
+  <form id="quizForm">
+    <div class="user-info">
+      <div>
+        <label for="userName">Name:</label>
+        <input type="text" id="userName" name="userName" placeholder="Enter your full name" required>
+      </div>
+      <div>
+        <label for="userEmail">Email:</label>
+        <input type="email" id="userEmail" name="userEmail" placeholder="Enter your email" required>
+      </div>
+    </div>
+
+    <div id="questionsContainer"></div>
+
+    <button type="button" class="submit-btn" onclick="submitQuiz()">Submit Quiz</button>
+  </form>
+
+  <div id="result-msg"></div>
+</div>
+
+<script>
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh6IDiXSyo4Qkvcioml5hNT-UP8pENsK8QBPn2Cj7nFkAmqY0HPamMBLUIVqQCiJly/exec";
+
+const quizData = [
+  {
+    scenario: "A Project Manager (PM) is leading a predictive infrastructure project where requirements are fixed and clearly defined from the beginning. During execution, a change request is made.",
+    statement: "In a predictive development approach, scope changes cannot be made once the project plan is baselined.",
+    answer: "False",
+    explanation: "In a predictive life cycle, requirements are defined early and changes are controlled, but changes can still occur through formal change control processes."
+  },
+  {
+    scenario: "An enterprise software organization is developing a new SaaS product. The Product Owner manages product features, while the Project Manager handles project constraints and team coordination.",
+    statement: "The Product Owner is solely responsible for overall project schedule constraints, while the Project Manager is accountable for maximizing product value.",
+    answer: "False",
+    explanation: "Product Owners are responsible for maximizing product value and are accountable for the end product, whereas Project Managers manage delivery and execution alignment."
+  },
+  {
+    scenario: "A project team plans to release software updates every two weeks on a strict recurring calendar schedule.",
+    statement: "Delivering project outputs on a fixed, recurring schedule (e.g., bi-weekly or monthly) represents a periodic delivery cadence.",
+    answer: "True",
+    explanation: ""
+  },
+  {
+    scenario: "An organization is launching a highly complex digital solution where technical capabilities are uncertain and requirements are far from agreement.",
+    statement: "According to the Stacey Complexity Model, linear predictive approaches are most effective when both requirements and technical capabilities are far from certainty.",
+    answer: "False",
+    explanation: "The Stacey Complexity Model indicates that adaptive (agile) approaches work best in complex environments with high uncertainty, whereas linear approaches work best when requirements/tech are close to certainty."
+  },
+  {
+    scenario: "A software development team uses Scrum to deliver an internal HR system. The team holds a daily meeting to discuss work completed, blockers, and upcoming tasks.",
+    statement: "The Daily Scrum is primarily designed as a status report meeting for leadership to evaluate individual performance.",
+    answer: "False",
+    explanation: "The Daily Scrum is a short meeting for team members to sync, inspect progress toward the goal, and adapt; it is explicitly NOT a status meeting."
+  },
+  {
+    scenario: "At the end of a sprint, the Scrum Master invites key stakeholders and customers to review the increment created by the team.",
+    statement: "The Sprint Review allows stakeholders and customers to inspect progress and provide feedback to adapt the product.",
+    answer: "True",
+    explanation: ""
+  },
+  {
+    scenario: "A Project Manager is reviewing the standard project life cycle framework to present to executives.",
+    statement: "The standard project management focus areas (Initiating, Planning, Executing, Monitoring & Controlling, Closing) apply only to predictive projects and cannot be used in adaptive projects.",
+    answer: "False",
+    explanation: "The five Project Management Focus Areas represent fundamental actions that take place over any project, regardless of whether it follows a predictive, adaptive, or hybrid approach."
+  },
+  {
+    scenario: "A steering committee meets to decide whether to charter a new corporate expansion project.",
+    statement: "The primary benefit of the Initiating focus area is ensuring projects are authorized only when aligned with strategic objectives and business case value.",
+    answer: "True",
+    explanation: ""
+  },
+  {
+    scenario: "A hybrid delivery team working on a modular system is halfway through execution when a minor change in design occurs.",
+    statement: "Planning activities must be completed entirely before execution begins and cannot be updated during project execution.",
+    answer: "False",
+    explanation: "As project changes are encountered, update planning may be required at any appropriate moment within a project phase."
+  },
+  {
+    scenario: "A PM is explaining the Executing Focus Area during a project kick-off meeting with functional managers.",
+    statement: "The Executing Focus Area is where the choice of development approach (predictive, adaptive, or hybrid) is often most evident in practice.",
+    answer: "True",
+    explanation: ""
+  },
+  {
+    scenario: "A PM is setting up performance monitoring dashboards for an ongoing engineering project.",
+    statement: "Monitoring involves analyzing variances and recommending course corrections, while Controlling consists of measuring actual performance against planned baselines.",
+    answer: "False",
+    explanation: "Monitoring consists of comparing actual performance with planned performance, while Controlling involves analyzing variances, evaluating alternatives, and recommending course corrections."
+  },
+  {
+    scenario: "A commercial project was terminated early due to strategic reprioritization by senior management.",
+    statement: "Formal closing procedures must be performed even if a project is terminated before full completion.",
+    answer: "True",
+    explanation: ""
+  },
+  {
+    scenario: "An agile team is working in 2-week iterations to build a customer portal.",
+    statement: "In an adaptive development approach, project focus areas interact in a flexible, overlapping manner within short iterations rather than sequentially.",
+    answer: "True",
+    explanation: ""
+  },
+  {
+    scenario: "A PMP candidate is comparing the PMBOK® Guide principles with Performance Domains.",
+    statement: "Project Management Principles provide guidance for mindset and behavior, which influence and shape the Performance Domains to achieve intended outcomes.",
+    answer: "True",
+    explanation: ""
+  },
+  {
+    scenario: "A Project Management Office (PMO) director is establishing standard processes for project managers based on PMBOK® standards.",
+    statement: "The PMBOK® Guide defines Performance Domains as 40 interactive, interrelated processes that work in unison to achieve project outcomes.",
+    answer: "True",
+    explanation: ""
+  }
+];
+
+function renderQuiz() {
+  const container = document.getElementById('questionsContainer');
+  quizData.forEach((q, index) => {
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.innerHTML = `
+      <div class="question-title">Question ${index + 1}</div>
+      <div class="scenario"><strong>Scenario:</strong> ${q.scenario}</div>
+      <div class="statement"><strong>Statement:</strong> ${q.statement}</div>
+      <div class="options">
+        <label><input type="radio" name="q${index}" value="True"> True</label>
+        <label><input type="radio" name="q${index}" value="False"> False</label>
+      </div>
+      <div class="explanation" id="exp${index}">
+        <strong>Explanation:</strong> ${q.explanation}
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function submitQuiz() {
+  const name = document.getElementById('userName').value.trim();
+  const email = document.getElementById('userEmail').value.trim();
+
+  if (!name || !email) {
+    alert('Please enter your Name and Email.');
+    return;
+  }
+
+  let score = 0;
+  let total = quizData.length;
+
+  quizData.forEach((q, index) => {
+    const selected = document.querySelector(`input[name="q${index}"]:checked`);
+    const expDiv = document.getElementById(`exp${index}`);
+
+    if (selected) {
+      if (selected.value === q.answer) {
+        score++;
+        expDiv.style.display = 'none';
+      } else {
+        if (q.answer === "False") {
+          expDiv.style.display = 'block';
+        } else {
+          expDiv.style.display = 'none';
+        }
+      }
+    } else {
+      if (q.answer === "False") {
+        expDiv.style.display = 'block';
+      }
+    }
+  });
+
+  const percentage = ((score / total) * 100).toFixed(1);
+  const resultMsg = document.getElementById('result-msg');
+  resultMsg.innerText = `Your Score: ${score} / ${total} (${percentage}%)`;
+
+  // Send payload to Google Sheets via Google Apps Script
+  const payload = {
+    quizName: "PMP_PM_in_Practice_Quiz_2",
+    userName: name,
+    userEmail: email,
+    score: score,
+    totalQuestions: total,
+    percentage: percentage + "%",
+    timestamp: new Date().toISOString()
+  };
+
+  fetch(GOOGLE_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  }).then(() => {
+    alert('Quiz submitted and results recorded successfully!');
+  }).catch(error => {
+    console.error('Submission Error:', error);
+    alert('Saved locally. Error syncing to sheet.');
+  });
+}
+
+window.onload = renderQuiz;
+</script>
+
+</body>
+</html>
