@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PMP Business Environment Quiz 3</title>
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --text-color: #333333;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .sub-header {
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #6c757d;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #111;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-size: 2rem;
+        }
+
+        .user-info-card {
+            background-color: #ebf3fa;
+            border: 1px solid #cce0f5;
+            border-radius: 6px;
+            padding: 15px;
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .input-group input {
+            padding: 10px;
+            border: 1px solid #b8daff;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 86, 179, 0.2);
+        }
+
+        .instructions-card {
+            background-color: #e9ecef;
+            border-radius: 6px;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+
+        .timer-box {
+            background-color: #fce8e6;
+            color: #d93025;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            border: 1px solid #f5c6cb;
+            font-size: 0.9rem;
+        }
+
+        .question-card {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #fff;
+        }
+
+        .question-text {
+            font-size: 1rem;
+            line-height: 1.5;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #222;
+        }
+
+        .options-group {
+            display: flex;
+            gap: 25px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 0.95rem;
+            user-select: none;
+        }
+
+        .option-label input {
+            margin-right: 8px;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 30px;
+        }
+
+        .submit-btn:hover {
+            background-color: #004085;
+        }
+
+        .submit-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .result-container {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            background-color: #e8f4ea;
+            border: 1px solid #c3e6cb;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+
+        .result-container h2 {
+            color: #155724;
+            margin-top: 0;
+        }
+
+        @media (max-width: 600px) {
+            .user-info-card {
+                flex-direction: column;
+            }
+            .instructions-card {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="sub-header">PMP350-01/26 | BUSINESS ENVIRONMENT MODULE</div>
+    <h1>PMP Business Environment Quiz 3</h1>
+
+    <form id="quizForm">
+        <!-- User Info Inputs -->
+        <div class="user-info-card">
+            <div class="input-group">
+                <label for="studentName">Student Name / اسم الطالب *</label>
+                <input type="text" id="studentName" placeholder="Enter your full name..." required>
+            </div>
+            <div class="input-group">
+                <label for="studentEmail">Student Email / البريد الإلكتروني *</label>
+                <input type="email" id="studentEmail" placeholder="Enter your email address..." required>
+            </div>
+        </div>
+
+        <!-- Instructions & Timer Bar -->
+        <div class="instructions-card">
+            <div><strong>Instructions:</strong> Read each scenario carefully and select whether the statement is <strong>True</strong> or <strong>False</strong>.</div>
+            <div class="timer-box" id="timer">Time: 00:00</div>
+        </div>
+
+        <!-- Questions Container -->
+        <div id="questionsContainer"></div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">Submit Quiz</button>
+    </form>
+
+    <div class="result-container" id="resultContainer">
+        <h2>Quiz Completed Successfully!</h2>
+        <p id="scoreDisplay" style="font-size: 1.2rem; font-weight: bold;"></p>
+        <p>Your responses and score have been recorded.</p>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh6IDiXSyo4Qkvcioml5hNT-UP8pENsK8QBPn2Cj7nFkAmqY0HPamMBLUIVqQCiJly/exec";
+        const quizName = "PMP_Business_Environment_Quiz_3";
+
+        const quizData = [
+            {
+                id: 1,
+                scenario: "During project execution, the organization initiates an internal structural reorganization that impacts project resources. The project manager decides to issue a formal project change request to adjust baseline deliverables without consulting or assessing the organization's culture or stakeholder readiness.",
+                statement: "The project manager is taking the correct approach by strictly using project change control instead of applying organizational change management principles.",
+                correct: "False"
+            },
+            {
+                id: 2,
+                scenario: "A project manager is leading a software implementation project. To ensure smooth adoption by the operational staff, the project manager creates a detailed rollout plan that outlines training, knowledge transfer, and readiness activities.",
+                statement: "The rollout plan created by the project manager is considered a mandatory core component of the main Project Management Plan.",
+                correct: "False"
+            },
+            {
+                id: 3,
+                scenario: "A company is executing an enterprise transformation project. Some functional managers are hesitant to support the project's new operating model. To address this, the project manager applies the ADKAR framework by first focusing on creating awareness of the need for change before trying to build desire or skills.",
+                statement: "Focusing on 'Awareness' as the first milestone in the ADKAR model aligns with effective change management practices.",
+                correct: "True"
+            },
+            {
+                id: 4,
+                scenario: "A senior project manager is mentoring a project team on organizational culture. She explains that risk appetite and tolerance are identical across all regions and industries because they are defined solely by corporate leadership.",
+                statement: "Risk threshold and appetite are fixed variables determined exclusively by organizational leadership regardless of country or project team context.",
+                correct: "False"
+            },
+            {
+                id: 5,
+                scenario: "During an Agile release planning session, a sponsor asks the project manager why project governance is necessary when using an adaptive life cycle. The project manager explains that governance in adaptive projects provides visibility through iteration expectations, planned release dates, and daily standups.",
+                statement: "Project governance applies to adaptive projects by utilizing iteration outputs, release schedules, and real-time monitoring through daily standups.",
+                correct: "True"
+            },
+            {
+                id: 6,
+                scenario: "An organization enforces a rigid project governance framework that requires executive approval for every minor task re-assignment within a project team.",
+                statement: "Increasing project governance controls to the highest possible level always guarantees higher stakeholder engagement and improved project accountability.",
+                correct: "False"
+            },
+            {
+                id: 7,
+                scenario: "A project manager is managing a complex engineering project with strict budget constraints. The governance framework establishes clear variance thresholds for cost deviations.",
+                statement: "If a budget issue occurs within the established tolerance threshold, the project manager must immediately escalate the problem to the governance board for resolution.",
+                correct: "False"
+            },
+            {
+                id: 8,
+                scenario: "An enterprise project uses Scrum to deliver a new digital platform. To align the project's daily execution with overarching corporate governance policies, the organization utilizes an intermediary governance board.",
+                statement: "Projects utilizing frameworks such as Scrum or SAFe can use intermediary governance boards to bridge project activities with organizational governance.",
+                correct: "True"
+            },
+            {
+                id: 9,
+                scenario: "A project manager is leading a multi-year construction project. As the project approaches the end of Phase 1, the steering committee conducts a Phase Gate review.",
+                statement: "A Phase Gate review (also known as a kill point or tollgate) is strictly limited to approving a project to move to the next phase.",
+                correct: "False"
+            },
+            {
+                id: 10,
+                scenario: "A project team is planning a predictive project divided into distinct consecutive phases where Phase 2 cannot start until Phase 1 is completely finished.",
+                statement: "This phase-to-phase structure represents an overlapping relationship between project phases.",
+                correct: "False"
+            },
+            {
+                id: 11,
+                scenario: "A project manager is managing a project under a predictive model. At the start of a new project phase, the project manager reviews project assumptions and analyzes potential risks associated with the upcoming work.",
+                statement: "Verifying project assumptions and analyzing risks are standard activities conducted at the beginning of a predictive project phase.",
+                correct: "True"
+            },
+            {
+                id: 12,
+                scenario: "A company is developing a new mobile application using Lean methodology. The product owner requests the delivery of a Minimum Viable Product (MVP) for early customer testing.",
+                statement: "A Minimum Viable Product (MVP) represents the complete, fully-featured final release of a product designed for maximum market penetration.",
+                correct: "False"
+            },
+            {
+                id: 13,
+                scenario: "A project manager in a pharmaceutical firm relies solely on the Project Management Office (PMO) to handle all project compliance responsibilities, assuming the project team is not accountable for compliance matters.",
+                statement: "Compliance responsibility for project activities, deliverable quality, and vendor procurement lies exclusively with the PMO, exempting the project team.",
+                correct: "False"
+            },
+            {
+                id: 14,
+                scenario: "A project manager leading a financial software development project registers compliance risks, assigns risk owners, documents potential impacts, and plans mitigation actions in a risk register.",
+                statement: "Treating compliance as a core project objective involves proactively tracking compliance risks, assigning risk owners, and continuously validating regulatory alignment.",
+                correct: "True"
+            },
+            {
+                id: 15,
+                scenario: "To ensure compliance across a high-risk infrastructure project, the project manager conducts compliance checks and quality audits exclusively after final deliverables are transferred to operations at the end of the project.",
+                statement: "Waiting until project handover to perform final compliance checks is the recommended best practice to avoid disturbing project execution.",
+                correct: "False"
+            }
+        ];
+
+        // Timer Logic
+        let secondsElapsed = 0;
+        const timerElement = document.getElementById("timer");
+        const timerInterval = setInterval(() => {
+            secondsElapsed++;
+            const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
+            const secs = String(secondsElapsed % 60).padStart(2, '0');
+            timerElement.textContent = `Time: ${mins}:${secs}`;
+        }, 1000);
+
+        // Render Questions
+        const container = document.getElementById("questionsContainer");
+        quizData.forEach((q, index) => {
+            const qCard = document.createElement("div");
+            qCard.className = "question-card";
+            qCard.innerHTML = `
+                <div class="question-text">
+                    ${index + 1}. Scenario: ${q.scenario}<br><br>
+                    Statement: ${q.statement}
+                </div>
+                <div class="options-group">
+                    <label class="option-label">
+                        <input type="radio" name="question_${q.id}" value="True" required> True
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="question_${q.id}" value="False" required> False
+                    </label>
+                </div>
+            `;
+            container.appendChild(qCard);
+        });
+
+        // Handle Form Submission
+        document.getElementById("quizForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById("submitBtn");
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Submitting...";
+            clearInterval(timerInterval);
+
+            const studentName = document.getElementById("studentName").value;
+            const studentEmail = document.getElementById("studentEmail").value;
+
+            let score = 0;
+            const userAnswers = {};
+
+            quizData.forEach(q => {
+                const selectedOption = document.querySelector(`input[name="question_${q.id}"]:checked`);
+                const answerVal = selectedOption ? selectedOption.value : "";
+                userAnswers[`Q${q.id}`] = answerVal;
+
+                if (answerVal === q.correct) {
+                    score++;
+                }
+            });
+
+            const timeSpent = timerElement.textContent.replace("Time: ", "");
+
+            // Payload for Google Apps Script
+            const payload = {
+                quizName: quizName,
+                studentName: studentName,
+                studentEmail: studentEmail,
+                score: `${score}/${quizData.length}`,
+                timeSpent: timeSpent,
+                answers: userAnswers
+            };
+
+            // Send Data to Google Sheets via POST Request
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(() => {
+                document.getElementById("quizForm").style.display = "none";
+                const resultBox = document.getElementById("resultContainer");
+                resultBox.style.display = "block";
+                document.getElementById("scoreDisplay").textContent = `Your Score: ${score} / ${quizData.length}`;
+            })
+            .catch(error => {
+                console.error("Error submitting quiz:", error);
+                alert("An error occurred while submitting your quiz. Please try again.");
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Submit Quiz";
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
