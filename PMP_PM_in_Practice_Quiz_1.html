@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PMP PM in Practice Quiz 1</title>
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 40px 20px;
+            direction: ltr;
+            text-align: left;
+            color: #333;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            color: #1e293b;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 26px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 25px;
+            font-size: 15px;
+        }
+
+        .user-info {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .user-info label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .user-info input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .user-info input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .question-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 22px;
+            margin-bottom: 22px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .question-header {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #334155;
+            margin-bottom: 18px;
+        }
+
+        .options-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .btn-option {
+            padding: 10px 24px;
+            border: 2px solid #cbd5e1;
+            background-color: #ffffff;
+            color: #475569;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn-option:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background-color: #f0f7ff;
+        }
+
+        .btn-option.selected {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #ffffff;
+        }
+
+        .explanation {
+            display: none;
+            padding: 14px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .explanation.correct {
+            display: block;
+            background-color: #f0fdf4;
+            color: #166534;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .explanation.incorrect {
+            display: block;
+            background-color: #fef2f2;
+            color: #991b1b;
+            border-left: 4px solid var(--error-color);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: background-color 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #004085;
+        }
+
+        #result-status {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>PMP: Project Management in Practice Quiz 1</h1>
+    <p class="subtitle">Answer all 15 scenario-based True/False questions below.</p>
+
+    <div class="user-info">
+        <label for="username">Participant Name / Email:</label>
+        <input type="text" id="username" placeholder="Enter your full name or email" required>
+    </div>
+
+    <form id="quiz-form">
+        <div id="questions-container"></div>
+        <button type="button" class="submit-btn" onclick="submitQuiz()">Submit Quiz & Save Results</button>
+    </form>
+
+    <div id="result-status"></div>
+</div>
+
+<script>
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh6IDiXSyo4Qkvcioml5hNT-UP8pENsK8QBPn2Cj7nFkAmqY0HPamMBLUIVqQCiJly/exec";
+
+    const quizData = {
+      quizName: "PMP_PM_in_Practice_Quiz_1",
+      questions: [
+        {
+          id: 1,
+          type: "tf",
+          question: "Scenario: In a predictive software project, the project manager leaves the development team to completely self-organize without setting direction or making key coordination decisions. True or False: This centralized coordination model aligns with PMI standard practice for predictive environments.",
+          answer: false,
+          explanation: "False. Centralized coordination is led and guided by a designated project manager who sets direction, makes decisions, and coordinates work, which is ideal for predictive projects. Allowing full self-organization without guidance represents a decentralized model best suited for agile projects."
+        },
+        {
+          id: 2,
+          type: "tf",
+          question: "Scenario: A organization is launching a complex transformation program. Executive leadership expects the project manager to handle all resource provisioning independently. True or False: Key organizational leadership functions include securing project funding, authority, equipment, and personnel to support delivery.",
+          answer: true,
+          explanation: "True. Providing resources—such as securing funding, authority, equipment, and personnel—is an essential function carried out by organizational leadership to ensure smooth project execution."
+        },
+        {
+          id: 3,
+          type: "tf",
+          question: "Scenario: A newly assigned project manager believes their primary duty is solely directing team activities. True or False: According to PMI standards, project success relies on leadership roles facilitating collaboration, building consensus, and guiding teams through change.",
+          answer: true,
+          explanation: "True. Leadership roles drive success by encouraging collaboration, building consensus, resolving conflicts, guiding teams through change, and providing regular feedback."
+        },
+        {
+          id: 4,
+          type: "tf",
+          question: "Scenario: An agile team working on a digital product features team members who fluidly assume leadership roles as needs evolve. True or False: This team structure is an example of a self-organizing, cross-functional team.",
+          answer: true,
+          explanation: "True. A self-organizing team is a cross-functional group in which members fluidly assume leadership as needed to achieve objectives."
+        },
+        {
+          id: 5,
+          type: "tf",
+          question: "Scenario: A project manager in a construction firm adopts servant leadership by strictly dictating daily tasks and enforcing rigid top-down rules. True or False: This approach demonstrates servant leadership principles.",
+          answer: false,
+          explanation: "False. Servant leadership is the practice of leading by understanding and addressing the development and needs of team members to enable high performance, not by top-down dictation."
+        },
+        {
+          id: 6,
+          type: "tf",
+          question: "Scenario: During resource planning, a project manager relies on a single developer who holds unique technical knowledge. True or False: Relying on a single expert for a critical task creates a single point of failure and should be mitigated by developing cross-functional skills.",
+          answer: true,
+          explanation: "True. Guidelines emphasize avoiding single points of failure where only one resource possesses a required skill, recommending cross-functional teams instead."
+        },
+        {
+          id: 7,
+          type: "tf",
+          question: "Scenario: A project manager seeks team members who have deep expertise in one specific domain while possessing a broad set of skills across other areas. True or False: These individuals are referred to as T-shaped people or generalizing specialists.",
+          answer: true,
+          explanation: "True. T-shaped individuals and generalizing specialists have one core area of deep specialization combined with a broad range of general skills."
+        },
+        {
+          id: 8,
+          type: "tf",
+          question: "Scenario: When building a project team, the project manager selects only deep specialists with no overlap in skills. True or False: Utilizing T-shaped people helps reduce work stoppages and resource shortages when key personnel are unavailable.",
+          answer: true,
+          explanation: "True. T-shaped team members provide versatility, increase organizational flexibility, and prevent work stoppages caused by resource shortages."
+        },
+        {
+          id: 9,
+          type: "tf",
+          question: "Scenario: A project manager independently writes and dictates all workplace behavior rules without consulting the team. True or False: A Team Charter and ground rules should be established together with the team at the beginning of the project.",
+          answer: false,
+          explanation: "False. The Team Charter and ground rules should be created collaboratively with the project team to establish shared values and acceptable behavior."
+        },
+        {
+          id: 10,
+          type: "tf",
+          question: "Scenario: The PMI Code of Ethics and Professional Conduct outlines core values for project practitioners. True or False: The four foundational values defined by PMI are Responsibility, Respect, Fairness, and Honesty.",
+          answer: true,
+          explanation: "True. The four values that drive ethical conduct in the PMI Code of Ethics are Responsibility, Respect, Fairness, and Honesty."
+        },
+        {
+          id: 11,
+          type: "tf",
+          question: "Scenario: An enterprise project manager needs specialized technical guidance that is unavailable within the immediate project team. True or False: Expert judgment can only be gathered from within the internal project management team.",
+          answer: false,
+          explanation: "False. Expert judgment can be obtained from external sources including consultants, stakeholders, professional/technical associations, and historical data."
+        },
+        {
+          id: 12,
+          type: "tf",
+          question: "Scenario: A global firm manages a project with team members located across multiple time zones. True or False: Co-location refers to a arrangement where team members work remotely using digital collaboration tools.",
+          answer: false,
+          explanation: "False. Co-location is an organizational strategy where team members are physically located close to one another to improve communication and productivity. Working remotely describes a virtual team setup."
+        },
+        {
+          id: 13,
+          type: "tf",
+          question: "Scenario: A project manager leads a fully virtual software delivery team. True or False: To ensure cohesion, the project manager must establish clear purpose, role clarity, shared goals, and prioritized collaboration.",
+          answer: true,
+          explanation: "True. Addressing virtual team needs requires fostering cohesion, defining clear roles and purpose, aligning shared goals, and ensuring collaboration."
+        },
+        {
+          id: 14,
+          type: "tf",
+          question: "Scenario: During team formation, a project manager conducts a SWOT analysis. True or False: Conducting a SWOT analysis helps identify team strengths, weaknesses, threats, and opportunities to improve overall performance.",
+          answer: true,
+          explanation: "True. Focusing on team strengths involves organizing around capabilities, recognizing weaknesses, and using SWOT analysis to identify opportunities and threats."
+        },
+        {
+          id: 15,
+          type: "tf",
+          question: "Scenario: In a hybrid project environment, communication channels are established at launch. True or False: Project managers should regularly check and evaluate communication mechanisms through retrospectives to ensure ongoing alignment.",
+          answer: true,
+          explanation: "True. Project managers should check communications regularly and use retrospectives to discuss and implement ongoing communication improvements."
+        }
+      ]
+    };
+
+    const userAnswers = {};
+
+    function renderQuiz() {
+        const container = document.getElementById('questions-container');
+        quizData.questions.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.innerHTML = `
+                <div class="question-header">Question ${index + 1}</div>
+                <div class="question-text">${q.question}</div>
+                <div class="options-group">
+                    <button type="button" class="btn-option" id="btn-${q.id}-true" onclick="selectAnswer(${q.id}, true)">True</button>
+                    <button type="button" class="btn-option" id="btn-${q.id}-false" onclick="selectAnswer(${q.id}, false)">False</button>
+                </div>
+                <div id="exp-${q.id}" class="explanation"><strong>Explanation:</strong> ${q.explanation}</div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function selectAnswer(questionId, value) {
+        userAnswers[questionId] = value;
+        
+        const btnTrue = document.getElementById(`btn-${questionId}-true`);
+        const btnFalse = document.getElementById(`btn-${questionId}-false`);
+
+        if(value === true) {
+            btnTrue.classList.add('selected');
+            btnFalse.classList.remove('selected');
+        } else {
+            btnFalse.classList.add('selected');
+            btnTrue.classList.remove('selected');
+        }
+    }
+
+    function submitQuiz() {
+        const username = document.getElementById('username').value.trim();
+        if(!username) {
+            alert('Please enter your name or email before submitting.');
+            return;
+        }
+
+        if(Object.keys(userAnswers).length < quizData.questions.length) {
+            alert('Please answer all questions before submitting.');
+            return;
+        }
+
+        let score = 0;
+        quizData.questions.forEach(q => {
+            const isCorrect = userAnswers[q.id] === q.answer;
+            if(isCorrect) score++;
+
+            const expDiv = document.getElementById(`exp-${q.id}`);
+            expDiv.className = `explanation ${isCorrect ? 'correct' : 'incorrect'}`;
+        });
+
+        const scorePercentage = ((score / quizData.questions.length) * 100).toFixed(1);
+        const statusDiv = document.getElementById('result-status');
+        statusDiv.style.color = '#0056b3';
+        statusDiv.innerHTML = `Your Score: ${score} / ${quizData.questions.length} (${scorePercentage}%)<br>Submitting results...`;
+
+        const payload = {
+            quizName: quizData.quizName,
+            userName: username,
+            score: score,
+            totalQuestions: quizData.questions.length,
+            percentage: scorePercentage,
+            answers: userAnswers,
+            submittedAt: new Date().toISOString()
+        };
+
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        }).then(() => {
+            statusDiv.style.color = '#28a745';
+            statusDiv.innerHTML = `Your Score: ${score} / ${quizData.questions.length} (${scorePercentage}%)<br>✓ Results successfully submitted!`;
+        }).catch(err => {
+            console.error('Error submitting results:', err);
+            statusDiv.style.color = '#dc3545';
+            statusDiv.innerHTML = `Your Score: ${score} / ${quizData.questions.length} (${scorePercentage}%)<br>⚠️ Failed to save results to Sheet.`;
+        });
+    }
+
+    window.onload = renderQuiz;
+</script>
+
+</body>
+</html>
